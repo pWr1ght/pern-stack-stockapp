@@ -82,28 +82,8 @@ const SearchResults = (props) => {
             }
         };
         fetchData()
-            // return () => {
-                
-            // }
     }, [setStocks]);
 
-    // const display = (tickerData) => {
-    //     console.log("display", item.length)
-    //     let pracData = ModifyDataForChart(tickerData)
-    //     let pass = 1
-    //     item.forEach(element => {
-    //       if(element.options.title.text == tickerData.symbol) {
-    //       pass = 0
-    //       }
-    //     })
-
-    //     if (pass) {
-    //       setItem([...item,pracData])
-    //     }
-    //     else {
-    //       console.log("no load")
-    //     }
-    // }
     // state has to be rendered before change can occur
 
     const onSubmitForm = async e => {
@@ -161,6 +141,9 @@ const SearchResults = (props) => {
             </Container>
 
 
+            
+
+            
             <div className="container">
                 <div className="row">
                     {

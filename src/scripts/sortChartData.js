@@ -1,16 +1,19 @@
 export const rearangeData = (tickerData) => {
-    let a = tickerData.o
-    let b = tickerData.h
-    let c = tickerData.l
-    let d = tickerData.c
-    var t = tickerData.t
-    let candleStruct = a.map((e, i) => ({
-      x: new Date(t[i] * 1000),
-      y: [e, b[i], c[i], d[i]]
+    let open = tickerData.o
+    let high = tickerData.h
+    let low = tickerData.l
+    let close = tickerData.c
+    var timeStamp = tickerData.t
+   
+    let candleStruct = open.map((o, i) => ({
+      x: new Date(timeStamp[i] * 1000),
+      y: [o, high[i], low[i], close[i]]
     }));
 
     // console.log("zip listing",candleStruct)
     let pracData = {
+      volume: tickerData.v,
+      symbol: tickerData.symbol,
       stockId: tickerData.stockId,
       series: [{
         data: candleStruct

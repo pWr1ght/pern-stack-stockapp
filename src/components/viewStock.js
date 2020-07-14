@@ -8,7 +8,7 @@ import GetStocks from '../api/getStocks'
 
 const ViewStock = (props) => {
     const history = useHistory()
-    const {stocks, setStocks} = useContext(StocksContext)
+    // const {stocks, setStocks} = useContext(StocksContext)
     const [stockFinanceData, setStockFinanceData] = useState([]);
 
     //passing params from route
