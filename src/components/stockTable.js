@@ -214,7 +214,7 @@ const EnhancedTable = () => {
       setDense(event.target.checked);
     };
   
-    const onSubmitForm = (event) => {
+    const onSubmitForm = async (event) => {
       event.preventDefault();
 
       // let now = new Date().getTime()
@@ -228,8 +228,21 @@ const EnhancedTable = () => {
         }
       })
       if(submit) {
-        setRows((prevRows) => [...prevRows, ...[createData(`${currentTicker}`, 452, 25.0, 51, 4.9)]])
+
+        // setRows((prevRows) => [...prevRows, ...[createData(`${currentTicker}`, 452, 25.0, 51, 4.9)]])
         //call the backend
+        let now = new Date().getTime()
+        let current = parseInt(now/1000)
+        let month = current - (86400 * 31)
+        const response = await GetStocks.post('/', {
+          user_id: '2',
+          ticker: currentTicker,
+          from: month,
+          to: current
+        })
+        const responseData = rearangeData(response.data)
+        console.log(responseData)
+        setRows((prevRows) => [...prevRows, ...[createData(`${currentTicker}`, 452, 25.0, 51, {stockId: responseData.stockId, options: responseData.options, series: responseData.series})]])
       }
       else {
         console.log("Already entered the stock")

@@ -25,6 +25,7 @@ import {Input, InputLabel, FormHelperText} from '@material-ui/core/';
 import {TextField, Button} from '@material-ui/core/'
 import {TableContext} from '../context/tableContext';
 import EnhancedTableHead from './tableHead'
+import GetStocks from '../api/getStocks'
 
 const useToolbarStyles = makeStyles((theme) => ({
     root: {
@@ -51,17 +52,32 @@ const EnhancedTableToolbar = (props) => {
     const {rows, setRows, money, setMoney} = useContext(TableContext)
     const {setSelected, selected, numSelected } = props;
 
-    const deleteRow = () => {
+    const deleteRow = async () => {
         console.log(selected);
-        const rowArray = props.rows.filter(row => {
-            if(!selected.includes(row.symbol)) {
+        const stayRowArray = props.rows.filter(row => 
+            !selected.includes(row.symbol)
+        )
+        //google lodash
+        const deleteRowArray = props.rows.filter(row => {
+            if(selected.includes(row.symbol)) {
                 return row;
-            } 
-        })
-        setRows(rowArray);
-        console.log("this is leftOver", rowArray)
-                    console.log(selected)
-                    setSelected([])
+            }
+        }).map(({chart}) => chart.stockId)
+        
+        // const deleteRowArray = props.rows.filter(row => {
+        //     if(selected.includes(row.symbol)) {
+        //         return row.chart;
+        //     }
+        // })
+        for(let i=0; i < deleteRowArray.length; i++) {
+            const response = await GetStocks.delete(`/${deleteRowArray[i]}`)
+        }
+        console.log("this is deleted, ", deleteRowArray)
+
+        setRows(stayRowArray);
+        console.log("this is leftOver", stayRowArray)
+        console.log(selected)
+        setSelected([])
     }
 
     return (

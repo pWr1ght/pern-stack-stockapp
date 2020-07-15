@@ -5,7 +5,7 @@ import ViewStock from './components/viewStock'
 import { StockContextProvider } from './context/stockContext';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'; 
 import {TableContextProvider} from './context/tableContext'
-import EnhancedTable from './components/stockTable'
+import HomePage from './components/homePage'
 
 function App() {
   return (
@@ -13,7 +13,7 @@ function App() {
     <TableContextProvider>
       <Router>
         <Switch>
-          <Route exact path="/" component={EnhancedTable}></Route>
+          <Route exact path="/" component={HomePage}></Route>
           <Route path="/view/:name/:id" component={ViewStock}></Route>
         </Switch>
       </Router>
