@@ -4,3 +4,6 @@
     margin-top: 20px;
     margin-bottom: 20px;
 }
+
+@import "https://code.highcharts.com/css/stocktools/gui.css";
+@import "https://code.highcharts.com/css/annotations/popup.css";

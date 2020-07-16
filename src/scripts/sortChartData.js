@@ -1,22 +1,50 @@
+const calcDollarChange = (pricesArray) => {
+  console.log(pricesArray[1].y[3] + " " + "- " + pricesArray[0].y[3])
+  let dayDollarChange = pricesArray[1].y[3] - pricesArray[0].y[3]
+  console.log("calcDollarChange", dayDollarChange)
+  return dayDollarChange
+}
+
+const calcPercChange = (pricesArray) => {
+  console.log(pricesArray)
+  console.log(pricesArray[1].y[3] + " " + "/ " + pricesArray[0].y[3])
+  let dayDollarChange = (((pricesArray[1].y[3] / pricesArray[0].y[3]) - 1)*100)
+  return dayDollarChange
+}
+
+const getCurrentPrice = (pricesArray) => {
+  console.log("calcCurrentChange", pricesArray)
+  return pricesArray[0].y[3];
+}
+
 export const rearangeData = (tickerData) => {
     let open = tickerData.o
     let high = tickerData.h
     let low = tickerData.l
     let close = tickerData.c
     var timeStamp = tickerData.t
-   
+
+
+    // if changing to finhub api, get rid of recentMonth Data
+    // Note candleStruct gets data within the last year 
     let candleStruct = open.map((o, i) => ({
       x: new Date(timeStamp[i] * 1000),
       y: [o, high[i], low[i], close[i]]
     }));
-
+    
+    let recentMonthData = candleStruct.slice(-22)
+    
     // console.log("zip listing",candleStruct)
     let pracData = {
+      diffDayChange: calcDollarChange(candleStruct.slice(-2)),
+      currentPrice: getCurrentPrice(candleStruct.slice(-1)),
+      dayPercChange: calcPercChange(candleStruct.slice(-2)),
+      oneYearData: candleStruct,
       volume: tickerData.v,
       symbol: tickerData.symbol,
       stockId: tickerData.stockId,
       series: [{
-        data: candleStruct
+        data: recentMonthData
       }],
       options: {
         chart: {

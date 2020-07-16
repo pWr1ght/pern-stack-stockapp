@@ -67,7 +67,7 @@ const EnhancedTable = () => {
       const [dense, setDense] = React.useState(false);
       const [rowsPerPage, setRowsPerPage] = React.useState(5);
       const [currentTicker, setCurrentTicker] = React.useState('');
-     
+      const [symbolError, setSymbolError] = React.useState(false)
      
       function createData(symbol, stockChange, marketCap, sharePrice, chart) {
         return { symbol, stockChange, marketCap, sharePrice, chart};
@@ -96,7 +96,7 @@ const EnhancedTable = () => {
                 // })
                 
                 let formattedRows = totalCandleData.map(row => {
-                  return createData(row.symbol, 43, 3.7, 67, {stockId: row.stockId, options: row.options, series: row.series})
+                  return createData(row.symbol, 43, 3.7, 67, {oneYearData: row.oneYearData, stockId: row.stockId, options: row.options, series: row.series})
                 })
                 console.log(formattedRows)
                 // console.log(formattedRows)
@@ -240,9 +240,17 @@ const EnhancedTable = () => {
           from: month,
           to: current
         })
-        const responseData = rearangeData(response.data)
-        console.log(responseData)
-        setRows((prevRows) => [...prevRows, ...[createData(`${currentTicker}`, 452, 25.0, 51, {stockId: responseData.stockId, options: responseData.options, series: responseData.series})]])
+        if(response.data.length == 0) {
+          console.log("ticker not supported")
+          setSymbolError(true)
+          
+        } else {
+          setSymbolError(false)
+          console.log(response.data)
+          const responseData = rearangeData(response.data)
+          console.log(responseData)
+          setRows((prevRows) => [...prevRows, ...[createData(`${currentTicker}`, 452, 25.0, 51, {stockId: responseData.stockId, options: responseData.options, series: responseData.series})]])
+        }
       }
       else {
         console.log("Already entered the stock")
@@ -265,7 +273,24 @@ const EnhancedTable = () => {
                     {/* input */}
                     <form onSubmit={onSubmitForm} noValidate autoComplete="off">
                         <div className="searchHeader">
-                            <TextField id="standard-basic" label="Please Enter your stock ticker" text="text" className="form-control" value={currentTicker} onChange={e => setCurrentTicker(e.target.value)}/>
+                          {!symbolError ? (
+                            <TextField id="standard-basic"
+                              label="Please Enter your stock ticker"
+                              text="text" className="form-control"
+                              value={currentTicker} 
+                              onChange={e => setCurrentTicker(e.target.value)}/>
+                            ) : (
+                              <TextField
+                              error
+                              className="form-control"
+                              id="standard-error-helper-text"
+                              label="Ticker not supported"
+                              value={currentTicker} 
+                              // helperText="Please enter another"
+                              onChange={e => setCurrentTicker(e.target.value)}
+                            />
+                            ) 
+                          }
                             <ButtonGroup
                                 color="primary"
                                 aria-label="contained primary button group"
@@ -326,7 +351,7 @@ const EnhancedTable = () => {
                           />
                         </TableCell>
                         <TableCell component="th" id={labelId} scope="row" padding="none">
-                          {row.symbol}
+                          <span>{row.symbol}</span>
                         </TableCell>
                         <TableCell align="right">{row.stockChange}</TableCell>
                         <TableCell align="right">{row.marketCap}</TableCell>

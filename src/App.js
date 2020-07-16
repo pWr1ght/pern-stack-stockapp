@@ -6,6 +6,7 @@ import { StockContextProvider } from './context/stockContext';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'; 
 import {TableContextProvider} from './context/tableContext'
 import HomePage from './components/homePage'
+import InteractiveBigChart from './components/interactiveChart'
 
 function App() {
   return (
@@ -14,7 +15,8 @@ function App() {
       <Router>
         <Switch>
           <Route exact path="/" component={HomePage}></Route>
-          <Route path="/view/:name/:id" component={ViewStock}></Route>
+          <Route exact path="/view/:id/:name/" component={ViewStock}></Route>
+          <Route exact path="/view/interactive/:id/:name/" component={InteractiveBigChart}></Route>
         </Switch>
       </Router>
         {/* <EnhancedTable/> */}

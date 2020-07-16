@@ -536,9 +536,10 @@ var data = props.stockFinanceData
     ]);
   }
 
-  const options = {
+  // Highcharts.stockChart('container',
+  const options ={
     navigation: {
-      bindingsClassName: 'chart-1'
+      bindingsClassName: 'chart-12'
     },
     yAxis: [{
       labels: {
@@ -556,6 +557,11 @@ var data = props.stockFinanceData
       height: '20%',
       offset: 0
     }],
+    stockTools: {
+      gui: {
+          enabled: false // disable the built-in toolbar
+      }
+    },
     tooltip: {
       shape: 'square',
       headerShape: 'callout',
@@ -590,13 +596,13 @@ var data = props.stockFinanceData
     },
     series: [{
       type: 'ohlc',
-      id: 'aapl-ohlc',
-      name: 'AAPL Stock Price',
+      id: `${props.symbol}-ohlc`,
+      name: `${props.symbol} Stock Price`,
       data: ohlc
     }, {
       type: 'column',
-      id: 'aapl-volume',
-      name: 'AAPL Volume',
+      id: `${props.symbol}-volume`,
+      name: `${props.symbol} Volume`,
       data: volume,
       yAxis: 1
     }],

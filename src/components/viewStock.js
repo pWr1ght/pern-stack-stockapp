@@ -5,6 +5,7 @@ import BigStockChart from './bigStockChart';
 import InteractiveChart from './interactiveChart'
 import axios from 'axios';
 import GetStocks from '../api/getStocks'
+import {BrowserRouter as Router, Switch, Route, Link} from 'react-router-dom'; 
 
 const ViewStock = (props) => {
     const history = useHistory()
@@ -15,6 +16,7 @@ const ViewStock = (props) => {
     const {id, name} = useParams();
 
     const onHandleBack = () => {
+        console.log("hello")
         history.goBack();
     }
 
@@ -23,7 +25,7 @@ const ViewStock = (props) => {
         
         const fetchChartData = async (id, name) => {
             try {
-                let response = await GetStocks.get(`/singlestock/${name}/${id}`)
+                let response = await GetStocks.get(`/singlestock/${id}/${name}`)
                 console.log(response);
                 setStockFinanceData(response.data)
             }
@@ -34,12 +36,20 @@ const ViewStock = (props) => {
         fetchChartData(id, name)
     }, [])
     
+    const getNextLink = () => {
+        console.log("hello")
+        history.push({
+            pathname: `/view/interactive/${id}/${name}`,
+            state: {stockData: stockFinanceData}
+          })
+        // history.push(`/view/interactive/${id}/${name}`)
+    }
     return (
         <div>
-            <button onClick={() => {console.log("changes to new route")}}>View chart</button>
-            <BigStockChart stockFinanceData={stockFinanceData}/>
+            <button onClick={getNextLink}>Link</button>
+            {/* <button><Link to="/view/interactive/3/gekk/">Link</Link></button> */}
+            <BigStockChart symbol={name} stockFinanceData={stockFinanceData}/>
             <div>{id}</div>
-            <InteractiveChart/>
             <button onClick={onHandleBack}>go back</button>
             <h1>hello</h1>
         </div>
