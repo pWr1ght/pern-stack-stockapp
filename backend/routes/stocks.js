@@ -8,7 +8,7 @@ const { lookup, history } = require('yahoo-stocks');
 // const FinnhubAPI = require('@stoqey/finnhub');
 const finnhub = require('finnhub');
 const dataOrganize = require('../../src/scripts/yFinFormat')
-const si = require('stock-info');
+const getYahooData = require('stock-info');
 const api_key = finnhub.ApiClient.instance.authentications['api_key'];
 api_key.apiKey = process.env.APIKEY_FINHUB// Replace this
 
@@ -100,7 +100,7 @@ router.route("/").get( async (req, res) => {
 
             let yFinanceCandleResponse = await axios.get(`https://finnhub.io/api/v1/stock/candle?symbol=${tickers[i].ticker}&resolution=D&from=${from}&to=${to}&token=${process.env.APIKEY_FINHUB}`)
             const yFinanceCandleData = yFinanceCandleResponse.data
-            const finCurrentPriceData = await si.getSingleStockInfo(tickers[i].ticker)
+            const finCurrentPriceData = await getYahooData.getSingleStockInfo(tickers[i].ticker)
             // let finCurrentPriceResponse = await axios.get(`https://finnhub.io/api/v1/quote?symbol=AAPL&token=${process.env.APIKEY_FINHUB}`)
             // const finCurrentPriceData = [finCurrentPriceResponse.data]
             // console.log(yFinanceCandleResponse)

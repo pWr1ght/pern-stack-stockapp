@@ -7,3 +7,8 @@
 
 @import "https://code.highcharts.com/css/stocktools/gui.css";
 @import "https://code.highcharts.com/css/annotations/popup.css";
+
+.expand-trigger {
+    width: 450px;
+    height: 142px;
+}

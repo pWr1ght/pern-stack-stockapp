@@ -31,7 +31,7 @@ const headCells = [
   { id: 'stockChange', numeric: true, disablePadding: false, label: 'Day Change' },
   { id: 'marketCap', numeric: true, disablePadding: false, label: 'marketCap (USD) ' },
   { id: 'sharePrice', numeric: true, disablePadding: false, label: 'Share Price' },
-  { id: 'chart', numeric: false, disablePadding: false, label: 'chart' },
+  { id: 'chart', numeric: false, disablePadding: true, label: 'chart' },
 ];
 
 function EnhancedTableHead(props) {
@@ -72,7 +72,7 @@ const sortTableComponent = (id, headCellName) => {
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
-            align={headCell.numeric ? 'right' : 'left'}
+            align={headCell.numeric ? 'right' : 'center'}
             padding={headCell.disablePadding ? 'none' : 'default'}
             sortDirection={orderBy === headCell.id ? order : false}
           >

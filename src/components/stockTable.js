@@ -32,6 +32,7 @@ import GetStocks from '../api/getStocks'
 import {rearangeData} from '../scripts/sortChartData';
 import ViewInfo from './newInfo';
 import StockArrow from './stockArrow';
+import '../styles/tableStyle.css'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -398,7 +399,7 @@ const EnhancedTable = () => {
                         <TableCell align="right"><StockArrow dollarChange={row.financialData.regularMarketChange} percentageChange={row.financialData.regularMarketChangePercent}/></TableCell>
                         <TableCell align="right">{abbreviateNumber(row.marketCap)}</TableCell>
                         <TableCell align="right">{row.sharePrice}</TableCell>
-                        <TableCell align="right">
+                        <TableCell className="expand-trigger" align="right">
                           <ViewInfo data={row.chart}
                                     id={row.chart.stockId}
                                     name={row.symbol}>
