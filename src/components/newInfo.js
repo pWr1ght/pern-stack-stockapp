@@ -38,10 +38,10 @@ const Charting = (props) => {
     }
     // console.log(props.data.options.title.text)
 return (
-    <div id="chart">
+    <div id="chart" style={{display: "flex"}}>
         {/* <button onClick={()=> onDelete(props.id, props.name)}>Delete</button> */}
-        <button onClick={()=> viewStock(props.id, props.name)}>View More Info</button>
         <Chart options={props.data.options} series={props.data.series} type="candlestick" height={125} width={300} />
+        <button onClick={()=> viewStock(props.id, props.name)}>View More Info</button>
     </div>
     )
 }

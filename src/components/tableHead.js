@@ -28,7 +28,7 @@ import {TableContext} from '../context/tableContext';
 
 const headCells = [
   { id: 'symbol', numeric: false, disablePadding: true, label: 'Stock Ticker' },
-  { id: 'stockChange', numeric: true, disablePadding: false, label: '24 hr. change' },
+  { id: 'stockChange', numeric: true, disablePadding: false, label: 'Day Change' },
   { id: 'marketCap', numeric: true, disablePadding: false, label: 'marketCap (USD) ' },
   { id: 'sharePrice', numeric: true, disablePadding: false, label: 'Share Price' },
   { id: 'chart', numeric: false, disablePadding: false, label: 'chart' },

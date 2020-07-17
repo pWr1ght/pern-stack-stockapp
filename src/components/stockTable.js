@@ -30,7 +30,7 @@ import Container from '@material-ui/core/Container';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import GetStocks from '../api/getStocks'
 import {rearangeData} from '../scripts/sortChartData';
-import CandleChart from './newInfo';
+import ViewInfo from './newInfo';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -96,7 +96,9 @@ const EnhancedTable = () => {
                 // })
                 
                 let formattedRows = totalCandleData.map(row => {
-                  return createData(row.symbol, 43, 3.7, 67, {oneYearData: row.oneYearData, stockId: row.stockId, options: row.options, series: row.series})
+                  return createData(row.symbol, row.diffDayChange, 3.7, 67, {diffDayChange: row.diffDayChange,
+                    currentPrice: row.currentPrice,
+                    dayPercChange: row.dayPercChange, oneYearData: row.oneYearData, stockId: row.stockId, options: row.options, series: row.series})
                 })
                 console.log(formattedRows)
                 // console.log(formattedRows)
@@ -248,8 +250,22 @@ const EnhancedTable = () => {
           setSymbolError(false)
           console.log(response.data)
           const responseData = rearangeData(response.data)
-          console.log(responseData)
-          setRows((prevRows) => [...prevRows, ...[createData(`${currentTicker}`, 452, 25.0, 51, {stockId: responseData.stockId, options: responseData.options, series: responseData.series})]])
+          // console.log(responseData)
+          setRows((prevRows) => 
+            [...prevRows,...[createData(`${currentTicker}`,
+              452,
+              25.0,
+              51,
+              { 
+                stockId: responseData.stockId,
+                options: responseData.options,
+                series: responseData.series,
+                diffDayChange: responseData.diffDayChange,
+                currentPrice: responseData.currentPrice,
+                dayPercChange: responseData.dayPercChange,
+                oneYearData:  responseData.oneYearData
+              })
+            ]])
         }
       }
       else {
@@ -356,7 +372,12 @@ const EnhancedTable = () => {
                         <TableCell align="right">{row.stockChange}</TableCell>
                         <TableCell align="right">{row.marketCap}</TableCell>
                         <TableCell align="right">{row.sharePrice}</TableCell>
-                        <TableCell align="right"><CandleChart data={row.chart} id={row.chart.stockId} name={row.symbol}></CandleChart></TableCell>
+                        <TableCell align="right">
+                          <ViewInfo data={row.chart}
+                                    id={row.chart.stockId}
+                                    name={row.symbol}>
+                                    </ViewInfo>
+                        </TableCell>
                       </TableRow>
                     );
                   })}

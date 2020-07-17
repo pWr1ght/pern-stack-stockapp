@@ -48,6 +48,9 @@ export const rearangeData = (tickerData) => {
       }],
       options: {
         chart: {
+          toolbar: {
+            show: false,
+          },
           type: 'candlestick',
           height: 350
         },
@@ -59,9 +62,20 @@ export const rearangeData = (tickerData) => {
           type: 'datetime'
         },
         yaxis: {
+          forceNiceScale: true,
+          // floating: true,
+          // decimalsInFloat: true,
+          // floating: true,
+          decimalsInFloat: true,
+ 
           tooltip: {
-            enabled: true
+            onDatasetHover: {
+              highlightDataSeries: false,
+          },
+            show: false,
+            enabled: false,
           }
+          
         }
       },
     };
