@@ -31,6 +31,7 @@ import ButtonGroup from '@material-ui/core/ButtonGroup';
 import GetStocks from '../api/getStocks'
 import {rearangeData} from '../scripts/sortChartData';
 import ViewInfo from './newInfo';
+import StockArrow from './stockArrow';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -69,10 +70,30 @@ const EnhancedTable = () => {
       const [currentTicker, setCurrentTicker] = React.useState('');
       const [symbolError, setSymbolError] = React.useState(false)
      
-      function createData(symbol, stockChange, marketCap, sharePrice, chart) {
-        return { symbol, stockChange, marketCap, sharePrice, chart};
-      }
 
+      function abbreviateNumber(value) {
+        let newValue = value;
+        if (value >= 1000) {
+            let suffixes = ["", "K", "M", "B","T"];
+            let suffixNum = Math.floor( (""+value).length/3 );
+            let shortValue = '';
+            for (let precision = 2; precision >= 1; precision--) {
+                shortValue = parseFloat( (suffixNum != 0 ? (value / Math.pow(1000,suffixNum) ) : value).toPrecision(precision));
+                let dotLessShortValue = (shortValue + '').replace(/[^a-zA-Z 0-9]+/g,'');
+                if (dotLessShortValue.length <= 2) { break; }
+            }
+            if (shortValue % 1 != 0)  shortValue = shortValue.toFixed(1);
+            newValue = shortValue+suffixes[suffixNum];
+        }
+        return newValue;
+    }
+      // function createData(symbol, stockChange, marketCap, sharePrice, chart) {
+      //   return { symbol, stockChange, marketCap, sharePrice, chart};
+      // }
+       // the function that grabs the rows
+       function createData(symbol, stockChange, marketCap, sharePrice, chart, financialData) {
+        return { symbol, stockChange, marketCap, sharePrice, chart, financialData};
+      }
       useEffect( () => {
         const fetchData = async () => {
             // console.log("hello")
@@ -96,10 +117,11 @@ const EnhancedTable = () => {
                 // })
                 
                 let formattedRows = totalCandleData.map(row => {
-                  return createData(row.symbol, row.diffDayChange, 3.7, 67, {diffDayChange: row.diffDayChange,
-                    currentPrice: row.currentPrice,
-                    dayPercChange: row.dayPercChange, oneYearData: row.oneYearData, stockId: row.stockId, options: row.options, series: row.series})
+                  return createData(row.symbol, row.priceChange, row.marketCap, row.currentPrice, {stockId: row.stockId, options: row.options, series: row.series}, row.yahooSummaryData)
                 })
+
+                // {diffDayChange: row.diffDayChange,
+                //   currentPrice: row.currentPrice, dayPercChange: row.dayPercChange, oneYearData: row.oneYearData}
                 console.log(formattedRows)
                 // console.log(formattedRows)
                 // setLoading(true)
@@ -137,9 +159,9 @@ const EnhancedTable = () => {
   
   
       // the function that grabs the rows
-      function createData(symbol, stockChange, marketCap, sharePrice, chart) {
-          return { symbol, stockChange, marketCap, sharePrice, chart};
-      }
+      // function createData(symbol, stockChange, marketCap, sharePrice, chart, financialData) {
+      //     return { symbol, stockChange, marketCap, sharePrice, chart, financialData};
+      // }
   
       function stableSort(array, comparator) {
           const stabilizedThis = array.map((el, index) => [el, index]);
@@ -260,6 +282,9 @@ const EnhancedTable = () => {
                 stockId: responseData.stockId,
                 options: responseData.options,
                 series: responseData.series,
+              },
+              {
+                stockId: responseData.stockId,
                 diffDayChange: responseData.diffDayChange,
                 currentPrice: responseData.currentPrice,
                 dayPercChange: responseData.dayPercChange,
@@ -369,8 +394,9 @@ const EnhancedTable = () => {
                         <TableCell component="th" id={labelId} scope="row" padding="none">
                           <span>{row.symbol}</span>
                         </TableCell>
-                        <TableCell align="right">{row.stockChange}</TableCell>
-                        <TableCell align="right">{row.marketCap}</TableCell>
+                        {/* {row.stockChange} */}
+                        <TableCell align="right"><StockArrow dollarChange={row.financialData.regularMarketChange} percentageChange={row.financialData.regularMarketChangePercent}/></TableCell>
+                        <TableCell align="right">{abbreviateNumber(row.marketCap)}</TableCell>
                         <TableCell align="right">{row.sharePrice}</TableCell>
                         <TableCell align="right">
                           <ViewInfo data={row.chart}

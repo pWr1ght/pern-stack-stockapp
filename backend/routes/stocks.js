@@ -8,7 +8,7 @@ const { lookup, history } = require('yahoo-stocks');
 // const FinnhubAPI = require('@stoqey/finnhub');
 const finnhub = require('finnhub');
 const dataOrganize = require('../../src/scripts/yFinFormat')
- 
+const si = require('stock-info');
 const api_key = finnhub.ApiClient.instance.authentications['api_key'];
 api_key.apiKey = process.env.APIKEY_FINHUB// Replace this
 
@@ -73,15 +73,17 @@ router.route("/").get( async (req, res) => {
         let listOfTickerData =[]
         for(let i = 0; i < tickers.length; i++) {
             // yahoo Api
-            let yFinanceCandleResponse = await history(`${tickers[i].ticker}`, {interval: '1d', range: '1y'})
-            console.log(yFinanceCandleResponse)
-            yFinanceCandleResponse = dataOrganize.yFinToApChart(yFinanceCandleResponse)
-            yFinanceCandleResponse.symbol = tickers[i].ticker
-            yFinanceCandleResponse.stockId = stockId[i]
-            // let yFinanceCurrent = await lookup(tickers[i].ticker);
-            // yFinanceCandleResponse.current = yFinanceCurrent
-            listOfTickerData.push(yFinanceCandleResponse)
-            console.log(listOfTickerData)
+            // let yFinanceCandleResponse = await history(`${tickers[i].ticker}`, {interval: '1d', range: '1y'})
+            // // console.log(yFinanceCandleResponse)
+            // yFinanceCandleResponse = dataOrganize.yFinToApChart(yFinanceCandleResponse)
+            // yFinanceCandleResponse.symbol = tickers[i].ticker
+            // yFinanceCandleResponse.stockId = stockId[i]
+            // // let yFinanceCurrent = await lookup(tickers[i].ticker);
+            // // yFinanceCandleResponse.current = yFinanceCurrent
+            // let finHubMarketPofrileResponse = await axios.get(`https://finnhub.io/api/v1/stock/profile2?symbol=${tickers[i].ticker}&token=${process.env.APIKEY_FINHUB}`)
+            // console.log(finHubMarketPofrileResponse.data)
+            // listOfTickerData.push(yFinanceCandleResponse)
+            // console.log(listOfTickerData)
             
             // promise example
             // if(yFinanceCandleData.s === "no_data")
@@ -96,22 +98,24 @@ router.route("/").get( async (req, res) => {
 
             //finhub Api
 
-            // let yFinanceCandleResponse = await axios.get(`https://finnhub.io/api/v1/stock/candle?symbol=${tickers[i].ticker}&resolution=D&from=${from}&to=${to}&token=${process.env.APIKEY_FINHUB}`)
-            // const yFinanceCandleData = yFinanceCandleResponse.data
+            let yFinanceCandleResponse = await axios.get(`https://finnhub.io/api/v1/stock/candle?symbol=${tickers[i].ticker}&resolution=D&from=${from}&to=${to}&token=${process.env.APIKEY_FINHUB}`)
+            const yFinanceCandleData = yFinanceCandleResponse.data
+            const finCurrentPriceData = await si.getSingleStockInfo(tickers[i].ticker)
             // let finCurrentPriceResponse = await axios.get(`https://finnhub.io/api/v1/quote?symbol=AAPL&token=${process.env.APIKEY_FINHUB}`)
             // const finCurrentPriceData = [finCurrentPriceResponse.data]
-            // // console.log(yFinanceCandleResponse)
-            // yFinanceCandleData.currentData = finCurrentPriceData
-            // yFinanceCandleData.symbol = tickers[i].ticker
-            // yFinanceCandleData.stockId = stockId[i]
-            // listOfTickerData.push(yFinanceCandleData)
+            // console.log(yFinanceCandleResponse)
+            yFinanceCandleData.dataSummary = finCurrentPriceData
+            yFinanceCandleData.symbol = tickers[i].ticker
+            yFinanceCandleData.stockId = stockId[i]
+            listOfTickerData.push(yFinanceCandleData)
+            // console.log(listOfTickerData)
         }
         // lookup('AAPL').then(response => {
         //     console.log(response);
         // });
         // listOfTickerData = [listOfTickerData]
         // listOfTickerData.push(newSymbols)
-        console.log(listOfTickerData)
+        // console.log(listOfTickerData)
         res.json([listOfTickerData, newSymbols])
     } catch(err) {
         console.log("Error: ",err);
