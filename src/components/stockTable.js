@@ -33,6 +33,8 @@ import {rearangeData} from '../scripts/sortChartData';
 import ViewInfo from './newInfo';
 import StockArrow from './stockArrow';
 import '../styles/tableStyle.css'
+import ReactHover from 'react-hover'
+import HoverSymbol from './hoverSymbol';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -67,6 +69,7 @@ const EnhancedTable = () => {
       const [selected, setSelected] = React.useState([]);
       const [page, setPage] = React.useState(0);
       const [dense, setDense] = React.useState(false);
+      const [chartWidth, setChartWidth] =  React.useState(false);
       const [rowsPerPage, setRowsPerPage] = React.useState(5);
       const [currentTicker, setCurrentTicker] = React.useState('');
       const [symbolError, setSymbolError] = React.useState(false)
@@ -92,8 +95,8 @@ const EnhancedTable = () => {
       //   return { symbol, stockChange, marketCap, sharePrice, chart};
       // }
        // the function that grabs the rows
-       function createData(symbol, stockChange, marketCap, sharePrice, chart, financialData) {
-        return { symbol, stockChange, marketCap, sharePrice, chart, financialData};
+       function createData(symbol, stockChange, marketCap, sharePrice, chart, financialData, imageInfo) {
+        return { symbol, stockChange, marketCap, sharePrice, chart, financialData, imageInfo};
       }
       useEffect( () => {
         const fetchData = async () => {
@@ -108,6 +111,7 @@ const EnhancedTable = () => {
                     params:{ from: month, to: current}
                 })
                 const candleChartData = stockResponse.data[0];
+                console.log(candleChartData)
                 const totalCandleData = candleChartData
                     .map(element => rearangeData(element))
                 console.log(totalCandleData)
@@ -118,7 +122,8 @@ const EnhancedTable = () => {
                 // })
                 
                 let formattedRows = totalCandleData.map(row => {
-                  return createData(row.symbol, row.priceChange, row.marketCap, row.currentPrice, {stockId: row.stockId, options: row.options, series: row.series}, row.yahooSummaryData)
+                  console.log(row)
+                  return createData(row.symbol, row.priceChange, row.marketCap, row.currentPrice, {stockId: row.stockId, options: row.options, series: row.series}, row.yahooSummaryData, row.imageInfo)
                 })
 
                 // {diffDayChange: row.diffDayChange,
@@ -238,6 +243,10 @@ const EnhancedTable = () => {
     const handleChangeDense = (event) => {
       setDense(event.target.checked);
     };
+
+    const handleChangeWidth = (event) => {
+      setChartWidth(event.target.checked);
+    };
   
     const onSubmitForm = async (event) => {
       event.preventDefault();
@@ -273,24 +282,20 @@ const EnhancedTable = () => {
           setSymbolError(false)
           console.log(response.data)
           const responseData = rearangeData(response.data)
-          // console.log(responseData)
+          console.log("adding", responseData)
           setRows((prevRows) => 
             [...prevRows,...[createData(`${currentTicker}`,
-              452,
-              25.0,
-              51,
-              { 
-                stockId: responseData.stockId,
-                options: responseData.options,
-                series: responseData.series,
-              },
+              responseData.priceChange,
+              responseData.marketCap,
+              responseData.currentPrice,
               {
-                stockId: responseData.stockId,
-                diffDayChange: responseData.diffDayChange,
-                currentPrice: responseData.currentPrice,
-                dayPercChange: responseData.dayPercChange,
-                oneYearData:  responseData.oneYearData
-              })
+              stockId: responseData.stockId,
+              options: responseData.options,
+              series: responseData.series
+              },
+              responseData.yahooSummaryData,
+              responseData.imageInfo
+              )
             ]])
         }
       }
@@ -307,7 +312,13 @@ const EnhancedTable = () => {
   
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
   
+    const optionsCursorTrueWithMargin = {
+      followCursor: true,
+      shiftX: 10,
+      shiftY: 0
+    }
     return (
+      
       <div className={classes.root}>
           <Container maxWidth="sm" className="text-center">
                 {/* header */}
@@ -351,6 +362,8 @@ const EnhancedTable = () => {
                   </div>
               </FormControl>
           </form> */}
+        {/* <Container style={{width: "100"}}disableGutters={false}> */}
+        <Container maxWidth={chartWidth ? false : 'lg'}>
         <Paper className={classes.paper}>
           <EnhancedTableToolbar rows={rows} setSelected={setSelected} selected={selected} numSelected={selected.length} />
           <TableContainer>
@@ -393,7 +406,28 @@ const EnhancedTable = () => {
                           />
                         </TableCell>
                         <TableCell component="th" id={labelId} scope="row" padding="none">
-                          <span>{row.symbol}</span>
+                          {/* <ReactHover
+                            options={optionsCursorTrueWithMargin}>
+                            <ReactHover.Trigger type='trigger'> */}
+                            {/* <img style={{height: "40px", width: "40px"}} src={row.imageInfo.logo}></img> */}
+                            <div style={{display:"flex"}}>
+                              
+                               <ReactHover
+                                  options={optionsCursorTrueWithMargin}>
+                                  <ReactHover.Trigger type='trigger'>
+                                    <div><h2>{row.symbol}</h2></div>
+                                    </ReactHover.Trigger>
+                                <ReactHover.Hover type='hover'>
+                                  <HoverSymbol image={row.imageInfo}/>
+                                </ReactHover.Hover>
+                              </ReactHover>
+                            </div>
+                            
+                            {/* </ReactHover.Trigger>
+                            <ReactHover.Hover type='hover'>
+                              <HoverSymbol/>
+                            </ReactHover.Hover>
+                          </ReactHover> */}
                         </TableCell>
                         {/* {row.stockChange} */}
                         <TableCell align="right"><StockArrow dollarChange={row.financialData.regularMarketChange} percentageChange={row.financialData.regularMarketChangePercent}/></TableCell>
@@ -426,9 +460,14 @@ const EnhancedTable = () => {
             onChangeRowsPerPage={handleChangeRowsPerPage}
           />
         </Paper>
+        </Container>
         <FormControlLabel
           control={<Switch checked={dense} onChange={handleChangeDense} />}
-          label="Dense padding"
+          label="Decrease Chart Spacing"
+        />
+         <FormControlLabel
+          control={<Switch checked={chartWidth} onChange={handleChangeWidth} />}
+          label="Increase Chart Width"
         />
       </div>
     );

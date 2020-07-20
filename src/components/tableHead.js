@@ -27,11 +27,11 @@ import {TableContext} from '../context/tableContext';
 
 
 const headCells = [
-  { id: 'symbol', numeric: false, disablePadding: true, label: 'Stock Ticker' },
-  { id: 'stockChange', numeric: true, disablePadding: false, label: 'Day Change' },
-  { id: 'marketCap', numeric: true, disablePadding: false, label: 'marketCap (USD) ' },
-  { id: 'sharePrice', numeric: true, disablePadding: false, label: 'Share Price' },
-  { id: 'chart', numeric: false, disablePadding: true, label: 'chart' },
+  { id: 'symbol', direction: 'left', disablePadding: false, label: 'Stock Ticker' },
+  { id: 'stockChange', direction: 'right', disablePadding: false, label: 'Day Change' },
+  { id: 'marketCap', direction: 'right', disablePadding: false, label: 'marketCap (USD) ' },
+  { id: 'sharePrice', direction: 'right', disablePadding: false, label: 'Share Price (USD)' },
+  { id: 'chart', direction: 'center', disablePadding: true, label: 'Chart' },
 ];
 
 function EnhancedTableHead(props) {
@@ -72,7 +72,7 @@ const sortTableComponent = (id, headCellName) => {
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
-            align={headCell.numeric ? 'right' : 'center'}
+            align={headCell.direction}
             padding={headCell.disablePadding ? 'none' : 'default'}
             sortDirection={orderBy === headCell.id ? order : false}
           >

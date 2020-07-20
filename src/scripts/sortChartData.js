@@ -46,6 +46,7 @@ export const rearangeData = (tickerData) => {
       // oneYearData: candleStruct,
 
       //comment out if using yahoo as initial data aquiring
+      imageInfo: tickerData.imageInfo,
       yahooSummaryData: tickerData.dataSummary,
       priceChangePercent: tickerData.dataSummary.regularMarketChangePercent,
       priceChange: tickerData.dataSummary.regularMarketChange, 

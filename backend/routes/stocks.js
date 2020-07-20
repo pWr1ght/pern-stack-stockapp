@@ -105,9 +105,16 @@ router.route("/").get( async (req, res) => {
             // const finCurrentPriceData = [finCurrentPriceResponse.data]
             // console.log(yFinanceCandleResponse)
             yFinanceCandleData.dataSummary = finCurrentPriceData
+            // get first word for logo
+            let name = finCurrentPriceData.displayName.split(" ")[0]
+            
+            const pictureData = await axios.get(`https://autocomplete.clearbit.com/v1/companies/suggest?query=${name}`)
+            
+            yFinanceCandleData.imageInfo = pictureData.data[0]
             yFinanceCandleData.symbol = tickers[i].ticker
             yFinanceCandleData.stockId = stockId[i]
             listOfTickerData.push(yFinanceCandleData)
+            
             // console.log(listOfTickerData)
         }
         // lookup('AAPL').then(response => {
@@ -131,6 +138,7 @@ router.route("/").get( async (req, res) => {
 //     }
 // });
 
+// need to update add
 router.route("/").post( async (req, res) => {
     let {ticker, user_id, from, to} = req.body;
     try {
@@ -139,12 +147,20 @@ router.route("/").post( async (req, res) => {
         console.log("no error--------")
         // console.log("candleStock error", candleStockChartResponse.data)
         const postStock =  await pool.query('INSERT INTO stock (user_id, ticker) VALUES (2, $1) RETURNING *',[ticker]);
+        const finCurrentPriceData = await getYahooData.getSingleStockInfo(ticker)
         let stockId = postStock.rows[0].stock_id
+        let name = finCurrentPriceData.displayName.split(" ")[0]
+        const pictureData = await axios.get(`https://autocomplete.clearbit.com/v1/companies/suggest?query=${name}`)
         candleStockChartResponse.data.symbol=ticker
         candleStockChartResponse.data.stockId = stockId
+        candleStockChartResponse.data.dataSummary = finCurrentPriceData
+        candleStockChartResponse.data.imageInfo = pictureData.data[0]
+
+        
         // const modifiedData = ModifyDataForChart.test(hello.data)
         // console.log(modifiedData.data)
         // res.json(modifiedData)
+        console.log(candleStockChartResponse.data)
         res.json(candleStockChartResponse.data)
         } else {
             console.log("error--------")
@@ -164,160 +180,8 @@ router.route("/:id").delete(async (req, res) => {
         console.log(error)
     }
 })
-// router.route("/:id").put(async (req, res) => {
-//     try {
-//         const postStock = await pool.query('')
-//     } catch {
 
-//     }
-// })
-
-let newfunction = () =>
-{
-    let item =
-    { c:
-        [ 12.98,
-          12.59,
-          12.17,
-          10.42,
-          11.53,
-          11.41,
-          11.55,
-          11.55,
-          11.65,
-          11.48,
-          11.83,
-          12.2,
-          11.14,
-          11.83,
-          10.93,
-          10.99,
-          11.24,
-          10.95,
-          10.97,
-          11.47,
-          11.23,
-          11.005 ],
-       h:
-        [ 13.04,
-          12.69,
-          12.61,
-          11.44,
-          11.62,
-          11.53,
-          12.14,
-          11.81,
-          11.935,
-          12,
-          11.91,
-          12.31,
-          12.04,
-          11.84,
-          11.7,
-          11.19,
-          11.36,
-          11.66,
-          11.68,
-          11.575,
-          11.64,
-          12.12 ],
-       l:
-        [ 12.3,
-          12.07,
-          11.93,
-          10.27,
-          11.045,
-          10.68,
-          11.38,
-          11.38,
-          11.13,
-          11.34,
-          11.33,
-          11.93,
-          10.9,
-          10.86,
-          10.87,
-          10.7,
-          10.745,
-          10.9,
-          10.86,
-          11.02,
-          11.11,
-          10.89 ],
-       o:
-        [ 12.7,
-          12.38,
-          12.51,
-          10.89,
-          11.2,
-          10.9,
-          12.02,
-          11.55,
-          11.26,
-          11.98,
-          11.42,
-          12.12,
-          11.96,
-          11.01,
-          11.61,
-          11.04,
-          10.84,
-          11.18,
-          11.26,
-          11.35,
-          11.23,
-          12.07 ],
-       s: 'ok',
-       t:
-        [ 1591623000,
-          1591709400,
-          1591795800,
-          1591882200,
-          1591968600,
-          1592227800,
-          1592314200,
-          1592400600,
-          1592487000,
-          1592573400,
-          1592832600,
-          1592919000,
-          1593005400,
-          1593091800,
-          1593178200,
-          1593437400,
-          1593523800,
-          1593610200,
-          1593696600,
-          1594042200,
-          1594128600,
-          1594215000 ],
-       v:
-        [ 11247200,
-          7781500,
-          8252100,
-          11959400,
-          10179200,
-          6956200,
-          9383200,
-          6522800,
-          6059700,
-          8894300,
-          7827400,
-          7237300,
-          7562700,
-          6728600,
-          25817600,
-          7397600,
-          5798100,
-          7706500,
-          7515400,
-          7084300,
-          4610100,
-          9160602 ]
-        }
-    return item;
-}
- module.exports = router;
+module.exports = router;
 
  
 
