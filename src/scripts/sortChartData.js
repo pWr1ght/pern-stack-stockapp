@@ -66,10 +66,10 @@ export const rearangeData = (tickerData) => {
           type: 'candlestick',
           height: 350
         },
-        title: {
-          text: `${tickerData.symbol}`,
-          align: 'left'
-        },
+        // title: {
+        //   text: `${tickerData.symbol}`,
+        //   align: 'left'
+        // },
         xaxis: {
           type: 'datetime'
         },

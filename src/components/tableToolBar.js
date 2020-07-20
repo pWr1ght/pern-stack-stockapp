@@ -98,13 +98,13 @@ const EnhancedTableToolbar = (props) => {
         {/* button for Deleting   */}
         {numSelected > 0 ? (
             <Tooltip title="Delete">
-            <IconButton onClick={deleteRow} aria-label="delete">
+            <IconButton style={{color: "white"}} onClick={deleteRow} aria-label="delete">
                 <DeleteIcon />
             </IconButton>
             </Tooltip>
         ) : (
             <Tooltip title="Filter list">
-            <IconButton aria-label="filter list">
+            <IconButton style={{color: "white"}} aria-label="filter list">
                 <FilterListIcon />
             </IconButton>
             </Tooltip>

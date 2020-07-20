@@ -1,4 +1,32 @@
 .expand-trigger {
-    max-width: 600px;
-    max-height: 142px;
+    width: 450px;
+    height: 142px;
 }
+.MuiToolbar-gutters.makeStyles-root-5.MuiToolbar-regular.MuiToolbar-root {
+    background-color: rgb(64,80,181);
+    color: white;
+}
+
+.MuiToolbar-gutters.MuiTablePagination-toolbar.MuiToolbar-regular.MuiToolbar-root {
+    border: 1px solid rgb(64,80,181);
+}
+
+.tableFormControl{
+    color: white
+}
+
+.loadingTable {
+    display: flex;
+    justify-content: center;
+}
+/* .searchHeader.h1 {
+    color: white;
+} */
+
+/* .searchTool{
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    color: white;
+} */

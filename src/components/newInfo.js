@@ -4,7 +4,7 @@ import Chart from 'react-apexcharts'
 import { StocksContext } from '../context/stockContext';
 import GetStocks from '../api/getStocks'
 import { useHistory } from 'react-router-dom';
-
+import Button from '@material-ui/core/Button';
 
 const Charting = (props) => {
     // const {stocks, setStocks} = useContext(StocksContext)
@@ -39,15 +39,14 @@ const Charting = (props) => {
     // console.log(props.data.options.title.text)
 return (
     // <div id="chart">
-    <div style={{display: "flex", alignItems: "center", padding: "0", marginLeft: "10"}}>
+    <div style={{display: "flex", alignItems: "center", padding: "0", margin: "10"}}>
         {/* <button onClick={()=> onDelete(props.id, props.name)}>Delete</button> */}
         <Chart options={props.data.options} series={props.data.series} type="candlestick" height={125} width={300} />
-        <button onClick={()=> viewStock(props.id, props.name)}>View More Info</button>
+        <Button size="medium" onClick={()=> viewStock(props.id, props.name)}>View More Info</Button>
     </div>
     // </div>
     )
 }
-
 
 
 

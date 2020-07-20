@@ -19,9 +19,11 @@ const StockArrow = (props) => {
     }, [])
     
     return (
-        <div style={{color: colorChange}}>
-           <span>
-                {positive + props.dollarChange.toFixed(2)}&nbsp;{'(' + props.percentageChange.toFixed(2) + '%' + ') '} 
+        <div style={{color: colorChange, textAlign: "center"}}>
+            <span>
+                {positive + props.dollarChange.toFixed(2)}
+            <br></br>
+                {'(' + props.percentageChange.toFixed(2) + '%' + ') '} 
                 {directionUp ? <i className="fas fa-caret-up"></i> : <i className="fas fa-caret-down"></i>}
             </span>
         </div>

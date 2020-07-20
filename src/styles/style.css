@@ -1,14 +1,20 @@
-.searchHeader{
+@import "https://code.highcharts.com/css/stocktools/gui.css";
+@import "https://code.highcharts.com/css/annotations/popup.css";
+
+.searchTool{
     display: flex;
     align-items: center;
     margin-top: 20px;
     margin-bottom: 20px;
+    color: white;
 }
 
-@import "https://code.highcharts.com/css/stocktools/gui.css";
-@import "https://code.highcharts.com/css/annotations/popup.css";
-
-.expand-trigger {
-    width: 450px;
-    height: 142px;
+.header {
+    padding-top: 40px;
+    color: white;
+    background-image: url('../pictures/stockExchangeBoard.jpg');
+    padding-bottom: 20px;
+    z-index: 0;
+    margin-bottom: 20px;
+    /* position: absolute; */
 }
