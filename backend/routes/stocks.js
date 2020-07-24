@@ -6,6 +6,7 @@ const fillInBlank = require('../../src/scripts/new').default;
 const { lookup, history } = require('yahoo-stocks');
 // const e = require('express');
 // const FinnhubAPI = require('@stoqey/finnhub');
+var parser = require('xml2json');
 const finnhub = require('finnhub');
 const dataOrganize = require('../../src/scripts/yFinFormat')
 const getYahooData = require('stock-info');
@@ -47,6 +48,38 @@ router.route("/singlestock/:id/:name").get( async (req, res) => {
     }
 })
 
+
+router.route("/singlestock/news").get( async (req, res) => {
+    let {stockName} = req.query;
+    try{
+        // back up google news xml fetch api
+        const newsResponse = await axios.get("https://news.google.com/rss/search?q=stock+google&hl=en-US&gl=US&ceid=US:en")
+        var json = parser.toJson(newsResponse.data);
+        let jsonObject = JSON.parse(json);
+        console.log(jsonObject.rss.channel.item)
+        res.json(jsonObject.rss.channel.item)
+
+        // const newsResponseFin = await axios.get(`https://finnhub.io/api/v1/company-news?symbol=AAPL&from=2020-04-30&to=2020-05-01&token=${process.env.APIKEY_FINHUB}`)
+        // console.log(newsResponseFin.data)
+        // res.json(newsResponseFin.data)
+    }
+    catch(err) {
+        console.log("did not get the news")
+    }
+})
+
+router.route("/singlestock/reccomendation").get( async (req, res) => {
+    let {stockName} = req.query;
+    try{
+        const recommendationResponseFin = await axios.get(`https://finnhub.io/api/v1/stock/recommendation?symbol=AAPL&token=${process.env.APIKEY_FINHUB}`)
+        
+        // console.log(recommendationResponseFin.data)
+        res.json(recommendationResponseFin.data)
+    }
+    catch(err) {
+        console.log("did not get the news")
+    }
+})
 
 router.route("/").get( async (req, res) => {
     try {
@@ -105,11 +138,15 @@ router.route("/").get( async (req, res) => {
             // const finCurrentPriceData = [finCurrentPriceResponse.data]
             // console.log(yFinanceCandleResponse)
             yFinanceCandleData.dataSummary = finCurrentPriceData
+            if(!yFinanceCandleData.dataSummary.trailingPE) {
+                yFinanceCandleData.dataSummary.trailingPE = "N/A";
+            }
             // get first word for logo
+            console.log(finCurrentPriceData)
             let name = finCurrentPriceData.displayName.split(" ")[0]
             
             const pictureData = await axios.get(`https://autocomplete.clearbit.com/v1/companies/suggest?query=${name}`)
-            
+            console.log(pictureData.data)
             yFinanceCandleData.imageInfo = pictureData.data[0]
             yFinanceCandleData.symbol = tickers[i].ticker
             yFinanceCandleData.stockId = stockId[i]
@@ -125,6 +162,7 @@ router.route("/").get( async (req, res) => {
         // console.log(listOfTickerData)
         res.json([listOfTickerData, newSymbols])
     } catch(err) {
+         console.log(finCurrentPriceData)
         console.log("Error: ",err);
     }
 });
@@ -151,6 +189,7 @@ router.route("/").post( async (req, res) => {
         let stockId = postStock.rows[0].stock_id
         let name = finCurrentPriceData.displayName.split(" ")[0]
         const pictureData = await axios.get(`https://autocomplete.clearbit.com/v1/companies/suggest?query=${name}`)
+        console.log(pictureData.data)
         candleStockChartResponse.data.symbol=ticker
         candleStockChartResponse.data.stockId = stockId
         candleStockChartResponse.data.dataSummary = finCurrentPriceData
@@ -160,7 +199,7 @@ router.route("/").post( async (req, res) => {
         // const modifiedData = ModifyDataForChart.test(hello.data)
         // console.log(modifiedData.data)
         // res.json(modifiedData)
-        console.log(candleStockChartResponse.data)
+        // console.log(candleStockChartResponse.data)
         res.json(candleStockChartResponse.data)
         } else {
             console.log("error--------")
