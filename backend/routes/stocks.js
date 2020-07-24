@@ -73,7 +73,7 @@ router.route("/singlestock/reccomendation").get( async (req, res) => {
     try{
         const recommendationResponseFin = await axios.get(`https://finnhub.io/api/v1/stock/recommendation?symbol=AAPL&token=${process.env.APIKEY_FINHUB}`)
         
-        // console.log(recommendationResponseFin.data)
+        console.log(recommendationResponseFin.data)
         res.json(recommendationResponseFin.data)
     }
     catch(err) {
@@ -133,7 +133,7 @@ router.route("/").get( async (req, res) => {
 
             let yFinanceCandleResponse = await axios.get(`https://finnhub.io/api/v1/stock/candle?symbol=${tickers[i].ticker}&resolution=D&from=${from}&to=${to}&token=${process.env.APIKEY_FINHUB}`)
             const yFinanceCandleData = yFinanceCandleResponse.data
-            const finCurrentPriceData = await getYahooData.getSingleStockInfo(tickers[i].ticker)
+            let finCurrentPriceData = await getYahooData.getSingleStockInfo(tickers[i].ticker)
             // let finCurrentPriceResponse = await axios.get(`https://finnhub.io/api/v1/quote?symbol=AAPL&token=${process.env.APIKEY_FINHUB}`)
             // const finCurrentPriceData = [finCurrentPriceResponse.data]
             // console.log(yFinanceCandleResponse)
@@ -142,11 +142,10 @@ router.route("/").get( async (req, res) => {
                 yFinanceCandleData.dataSummary.trailingPE = "N/A";
             }
             // get first word for logo
-            console.log(finCurrentPriceData)
-            let name = finCurrentPriceData.displayName.split(" ")[0]
+            const name = finCurrentPriceData.displayName.split(" ")[0]
             
             const pictureData = await axios.get(`https://autocomplete.clearbit.com/v1/companies/suggest?query=${name}`)
-            console.log(pictureData.data)
+            
             yFinanceCandleData.imageInfo = pictureData.data[0]
             yFinanceCandleData.symbol = tickers[i].ticker
             yFinanceCandleData.stockId = stockId[i]
@@ -162,7 +161,6 @@ router.route("/").get( async (req, res) => {
         // console.log(listOfTickerData)
         res.json([listOfTickerData, newSymbols])
     } catch(err) {
-         console.log(finCurrentPriceData)
         console.log("Error: ",err);
     }
 });
@@ -189,7 +187,6 @@ router.route("/").post( async (req, res) => {
         let stockId = postStock.rows[0].stock_id
         let name = finCurrentPriceData.displayName.split(" ")[0]
         const pictureData = await axios.get(`https://autocomplete.clearbit.com/v1/companies/suggest?query=${name}`)
-        console.log(pictureData.data)
         candleStockChartResponse.data.symbol=ticker
         candleStockChartResponse.data.stockId = stockId
         candleStockChartResponse.data.dataSummary = finCurrentPriceData
@@ -199,7 +196,7 @@ router.route("/").post( async (req, res) => {
         // const modifiedData = ModifyDataForChart.test(hello.data)
         // console.log(modifiedData.data)
         // res.json(modifiedData)
-        // console.log(candleStockChartResponse.data)
+        console.log(candleStockChartResponse.data)
         res.json(candleStockChartResponse.data)
         } else {
             console.log("error--------")

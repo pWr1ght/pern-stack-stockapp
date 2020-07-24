@@ -22,7 +22,7 @@ const StockArrow = (props) => {
         <div style={{color: colorChange, textAlign: "center"}}>
             <span>
                 {positive + props.dollarChange.toFixed(2)}
-            <br></br>
+                {props.break ? (<br></br>) : (false)}
                 {'(' + props.percentageChange.toFixed(2) + '%' + ') '} 
                 {directionUp ? <i className="fas fa-caret-up"></i> : <i className="fas fa-caret-down"></i>}
             </span>

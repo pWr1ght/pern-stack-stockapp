@@ -1,0 +1,18 @@
+.item {
+    width: 100%;
+    font-size: 15px;
+  }
+  
+  .cardContainer {
+    display: flex;
+    flex-wrap: wrap;
+    line-height: 2rem;
+  }
+  
+  .cardContainer > div {
+    flex: 0 50%;
+  }
+
+  .item > div {
+      line-height: 1rem;
+  }
