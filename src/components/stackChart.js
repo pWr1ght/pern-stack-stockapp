@@ -2,13 +2,17 @@ import ReactApexChart from 'react-apexcharts'
 import React, { useState,useEffect } from 'react'
 import GetStocks from '../api/getStocks'
 
-const StackChart = () => {
+const StackChart = (props) => {
     const [seriesData, setSeries] = useState([0])
     const [dates, setDates] = useState([])
 
     useEffect(() => {
         const getRecommendations = async () => {
-            let getReccomendationResponse = await GetStocks.get('/singlestock/reccomendation')
+            let getReccomendationResponse = await GetStocks.get('/singlestock/reccomendation', {
+              params: {
+                stockName: props.symbol
+              }
+            })
             let recentRec = getReccomendationResponse.data[0]
             setSeries([recentRec.buy, recentRec.hold, recentRec.sell, recentRec.strongBuy,  recentRec.strongSell])
             setDates(recentRec.period)

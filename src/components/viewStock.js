@@ -64,10 +64,10 @@ const ViewStock = (props) => {
                 console.log(err)
             }
         }
-        const fetchNews = async () => {
+        const fetchNews = async (name) => {
             try{
             const getNewsResponse = await GetStocks.get('/singlestock/news', {
-                params:{ stockName: 'Apple'}
+                params: { stockName: name}
             })
             let getTopTenNewsArticles = (getNewsResponse.data).slice(0, 10)
             
@@ -80,7 +80,7 @@ const ViewStock = (props) => {
             }
         }
         fetchChartData(id, name)
-        fetchNews(name)
+        fetchNews(props.location.financialData.displayName)
     }, [])
     
     const interactWithChart = () => {
@@ -129,7 +129,7 @@ const ViewStock = (props) => {
                     </Grid>
                     <Grid item lg={6}>
                         <Paper className={classes.paper}>
-                            <StackChart/>
+                            <StackChart symbol={props.location.financialData.symbol}/>
                         </Paper>
                     </Grid>
                     </Grid>

@@ -51,12 +51,13 @@ router.route("/singlestock/:id/:name").get( async (req, res) => {
 
 router.route("/singlestock/news").get( async (req, res) => {
     let {stockName} = req.query;
+    console.log(stockName, "----------------------")
     try{
         // back up google news xml fetch api
-        const newsResponse = await axios.get("https://news.google.com/rss/search?q=stock+google&hl=en-US&gl=US&ceid=US:en")
+        const newsResponse = await axios.get(`https://news.google.com/rss/search?q=stock+${stockName}&hl=en-US&gl=US&ceid=US:en`)
         var json = parser.toJson(newsResponse.data);
         let jsonObject = JSON.parse(json);
-        console.log(jsonObject.rss.channel.item)
+        // console.log(jsonObject.rss.channel.item)
         res.json(jsonObject.rss.channel.item)
 
         // const newsResponseFin = await axios.get(`https://finnhub.io/api/v1/company-news?symbol=AAPL&from=2020-04-30&to=2020-05-01&token=${process.env.APIKEY_FINHUB}`)
@@ -70,10 +71,11 @@ router.route("/singlestock/news").get( async (req, res) => {
 
 router.route("/singlestock/reccomendation").get( async (req, res) => {
     let {stockName} = req.query;
+    console.log(stockName, "----------------------")
     try{
-        const recommendationResponseFin = await axios.get(`https://finnhub.io/api/v1/stock/recommendation?symbol=AAPL&token=${process.env.APIKEY_FINHUB}`)
+        const recommendationResponseFin = await axios.get(`https://finnhub.io/api/v1/stock/recommendation?symbol=${stockName}&token=${process.env.APIKEY_FINHUB}`)
         
-        console.log(recommendationResponseFin.data)
+        // console.log(recommendationResponseFin.data)
         res.json(recommendationResponseFin.data)
     }
     catch(err) {
@@ -141,8 +143,15 @@ router.route("/").get( async (req, res) => {
             if(!yFinanceCandleData.dataSummary.trailingPE) {
                 yFinanceCandleData.dataSummary.trailingPE = "N/A";
             }
+            
             // get first word for logo
-            const name = finCurrentPriceData.displayName.split(" ")[0]
+            if(finCurrentPriceData.displayName) {
+                var name = finCurrentPriceData.displayName.split(" ")[0]
+            }
+            else{
+                finCurrentPriceData = await getYahooData.getSingleStockInfo(tickers[i].ticker)
+                var name = finCurrentPriceData.displayName.split(" ")[0]
+            }
             
             const pictureData = await axios.get(`https://autocomplete.clearbit.com/v1/companies/suggest?query=${name}`)
             
