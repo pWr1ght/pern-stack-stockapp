@@ -21,6 +21,7 @@ import {rearangeData} from '../scripts/sortChartData';
 import ViewInfo from './newInfo';
 import StockArrow from './stockArrow';
 import '../styles/tableStyle.css'
+import '../styles/style.css'
 import ReactHover from 'react-hover'
 import HoverSymbol from './hoverSymbol';
 import LinearProgress from '@material-ui/core/LinearProgress';
@@ -104,28 +105,17 @@ const EnhancedTable = () => {
               const totalStockInfoResponse = await GetStocks.get('/', {
                   params:{ from: month, to: current}
               })
-              // const candleChartData = totalStockInfoResponse.data[0];
-              // console.log(candleChartData)
+
               const totalModifiedStockData = totalStockInfoResponse.data[0]
                   .map(element => rearangeData(element))
-              // console.log(totalModifiedStockData)
-              // let totalCandleData = []
-              // candleChartData.forEach(element => {
-              //     let oneCandle = rearangeData(element);
-              //     totalCandleData.push(oneCandle);
-              // })
               let formattedRows = totalModifiedStockData.map(row => {
                 // console.log(row)
                 return createData(row.symbol, row.priceChange, row.marketCap, row.currentPrice, {stockId: row.stockId, options: row.options, series: row.series}, row.yahooSummaryData, row.imageInfo, row.stockId, abbreviateNumber(row.marketCap))
               })
-              
-              // console.log(formattedRows)
               setLoading(true)
-              // setRows(formattedRows);
               let newRowStorage = JSON.stringify(formattedRows)
               localStorage.setItem("StockRows", newRowStorage );
               setRows(formattedRows);
-              // console.log(localStorage)
           } catch(err) {
               console.log("thi is an error, ", err);
           }
