@@ -25,6 +25,9 @@ import BeachAccessIcon from '@material-ui/icons/BeachAccess';
 import Box from '@material-ui/core/Box'
 import StackChart from './stackChart'
 import StockNewsListItem from './stockNewsListItem.js'
+import {TableContext} from '../context/tableContext';
+import {CurrentStockContext} from '../context/currentStockContext';
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -39,10 +42,12 @@ const useStyles = makeStyles((theme) => ({
 
 const ViewStock = (props) => {
     const history = useHistory()
+    const {currentStockInfo, setCurrentStockInfo} = useContext(CurrentStockContext)
     // const {stocks, setStocks} = useContext(StocksContext)
-    const [stockFinanceData, setStockFinanceData] = useState([]);
+    const [bigChartData, setBigChartData] = useState([]);
     const [articles, setArticles] = useState([])
-
+    // const {rows, setRows} = useContext(TableContext)
+    // const [currentRowInfo, setCurrentRowInfo] = useState()
     //passing params from route
     const {id, name} = useParams();
 
@@ -54,24 +59,27 @@ const ViewStock = (props) => {
     }
 
     useEffect( () => {
+        // localStorage.localStorage.setItem("currentStockInfo", currentStockInfo);
+        let currentStockRow = JSON.parse(localStorage.getItem("currentStockInfo"))
+        setCurrentStockInfo(currentStockRow)
+        // console.log("Is this the row you picked, ", currentStockInfo)
+        //setting up BigChart data
         const fetchChartData = async (id, name) => {
             try {
                 let response = await GetStocks.get(`/singlestock/${id}/${name}`)
-                console.log(response);
-                setStockFinanceData(response.data)
+                setBigChartData(response.data)
             }
             catch (err) {
                 console.log(err)
             }
         }
+        //fetching News
         const fetchNews = async (name) => {
             try{
             const getNewsResponse = await GetStocks.get('/singlestock/news', {
                 params: { stockName: name}
             })
             let getTopTenNewsArticles = (getNewsResponse.data).slice(0, 10)
-            
-            console.log(getTopTenNewsArticles)
             setArticles(getTopTenNewsArticles)
             }
             catch (err)
@@ -79,21 +87,31 @@ const ViewStock = (props) => {
                 console.log("No news")
             }
         }
+        //Retreiving stock from the rows
+        // const currentStockInfo = rows.filter(row => row.stockId == id)
+        // console.log("this is current stock info", currentStockInfo, id)
+        // setCurrentRowInfo(currentStockInfo)
         fetchChartData(id, name)
-        fetchNews(props.location.financialData.displayName)
+        // console.log(currentStockInfo[0].financialData.displayName)
+        // fetchNews(props.location.financialData.displayName)
+        // [0].financialData.displayName
+        fetchNews(currentStockRow.financialData.displayName)
     }, [])
     
     const interactWithChart = () => {
         history.push({
             pathname: `/view/interactive/${id}/${name}`,
-            state: {stockData: stockFinanceData}
+            state: {stockData: bigChartData}
           })
     }
 
     const classes = useStyles();
     return (
         <div>
-            <button onClick={() => console.log(props.location.financialData)}>Find Location</button>
+            <button onClick={() => console.log(currentStockInfo)}>currentInfo</button>
+            {/* <button onClick={() => console.log(rows)}>rows</button> */}
+            {/* <button onClick={() => console.log(statistics)}>stats</button> */}
+            {/* <button onClick={() => console.log(props.location.financialData)}>Find Location</button> */}
             <Button variant="outlined" size="large" color="primary">
                 <i onClick={onHandleBack} class="far fa-arrow-alt-circle-left"></i>
             </Button>   
@@ -101,12 +119,12 @@ const ViewStock = (props) => {
                 <Grid container spacing={3}>
                     <Grid item lg={8}>
                         <Paper className={classes.paper}>
-                            <BigStockChart id={id} name={name} stockFinanceData={stockFinanceData}/>
+                            <BigStockChart id={id} name={name} bigChartData={bigChartData}/>
                         </Paper>
                     </Grid>
                     <Grid item lg={4}>
                         <Paper className={classes.paper}>
-                            <StockCard name={name} abbreviatedMarketCap={props.location.abbreviatedMarketCap} cardData={props.location.financialData}/>
+                            <StockCard name={name} abbreviatedMarketCap={currentStockInfo.abMarketCap} cardData={currentStockInfo.financialData}/>
                         </Paper>
                     </Grid>
                     <Grid item lg={6}>
@@ -129,7 +147,7 @@ const ViewStock = (props) => {
                     </Grid>
                     <Grid item lg={6}>
                         <Paper className={classes.paper}>
-                            <StackChart symbol={props.location.financialData.symbol}/>
+                            <StackChart symbol={name}/>
                         </Paper>
                     </Grid>
                     </Grid>

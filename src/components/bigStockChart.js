@@ -9,7 +9,7 @@ import {useParams, useHistory} from 'react-router-dom'
 
 const SingleVeiw = (props) => {
 const history = useHistory()
-var data = props.stockFinanceData
+var data = props.bigChartData
   
   var ohlc = [],
     volume = [],
@@ -125,7 +125,7 @@ var data = props.stockFinanceData
   const interactWithChart = () => {
     history.push({
         pathname: `/view/interactive/${props.id}/${props.name}`,
-        state: {stockData: props.stockFinanceData}
+        state: {stockData: props.bigChartData}
       })
   }
   

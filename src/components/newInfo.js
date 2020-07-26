@@ -1,16 +1,18 @@
-
 import React, {Fragment, useState,Component, useEffect, useContext} from 'react'
 import Chart from 'react-apexcharts'
-import { StocksContext } from '../context/stockContext';
+import {CurrentStockContext} from '../context/currentStockContext';
 import GetStocks from '../api/getStocks'
 import { useHistory } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 
 const Charting = (props) => {
-    // const {stocks, setStocks} = useContext(StocksContext)
+    const {currentStockInfo, setCurrentStockInfo} = useContext(CurrentStockContext)
     let history = useHistory()
     
-    const viewStock = async (id, name) => {
+    const viewStock = async (id, name, row) => {
+    setCurrentStockInfo(row)
+    let stringRow = JSON.stringify(row)
+    localStorage.setItem("currentStockInfo", stringRow);
     history.push({
         pathname: `/view/${id}/${name}`,
         financialData: props.financialData,
@@ -22,7 +24,9 @@ return (
 
     <div style={{display: "flex", alignItems: "center", padding: "0", margin: "10"}}>
         <Chart options={props.data.options} series={props.data.series} type="candlestick" height={125} width={300} />
-        <Button size="medium" onClick={()=> viewStock(props.id, props.name)}>View More Info</Button>
+        <Button size="medium" onClick={()=> viewStock(props.id, props.name, props.row)}>View More Info</Button>
+        {/* <Button onClick={console.log(props.name)}>Current</Button> */}
+        {/* <Button onClick={console.log("hello")}>dadas</Button> */}
     </div>
     )
 }

@@ -85,11 +85,15 @@ const EnhancedTable = () => {
     }
 
     // the function that grabs the rows
-    function createData(symbol, stockChange, marketCap, sharePrice, chart, financialData, imageInfo) {
-      return { symbol, stockChange, marketCap, sharePrice, chart, financialData, imageInfo};
+    function createData(symbol, stockChange, marketCap, sharePrice, chart, financialData, imageInfo, stockId, abMarketCap) {
+      return { symbol, stockChange, marketCap, sharePrice, chart, financialData, imageInfo, stockId, abMarketCap};
     }
 
     useEffect( () => {
+      let rowStorage = localStorage.getItem('StockRows')
+      if(rowStorage){
+        setRows(JSON.parse(rowStorage))
+      }
       const fetchData = async () => {
           try{
               //initiate the date for to and from for api call
@@ -97,27 +101,31 @@ const EnhancedTable = () => {
               const current = parseInt(now/1000)
               const month = current - (86400 * 31)
   
-              const stockResponse = await GetStocks.get('/', {
+              const totalStockInfoResponse = await GetStocks.get('/', {
                   params:{ from: month, to: current}
               })
-              const candleChartData = stockResponse.data[0];
-              console.log(candleChartData)
-              const totalCandleData = candleChartData
+              // const candleChartData = totalStockInfoResponse.data[0];
+              // console.log(candleChartData)
+              const totalModifiedStockData = totalStockInfoResponse.data[0]
                   .map(element => rearangeData(element))
-              console.log(totalCandleData)
+              // console.log(totalModifiedStockData)
               // let totalCandleData = []
               // candleChartData.forEach(element => {
               //     let oneCandle = rearangeData(element);
               //     totalCandleData.push(oneCandle);
               // })
-              let formattedRows = totalCandleData.map(row => {
-                console.log(row)
-                return createData(row.symbol, row.priceChange, row.marketCap, row.currentPrice, {stockId: row.stockId, options: row.options, series: row.series}, row.yahooSummaryData, row.imageInfo)
+              let formattedRows = totalModifiedStockData.map(row => {
+                // console.log(row)
+                return createData(row.symbol, row.priceChange, row.marketCap, row.currentPrice, {stockId: row.stockId, options: row.options, series: row.series}, row.yahooSummaryData, row.imageInfo, row.stockId, abbreviateNumber(row.marketCap))
               })
-
-              console.log(formattedRows)
+              
+              // console.log(formattedRows)
               setLoading(true)
+              // setRows(formattedRows);
+              let newRowStorage = JSON.stringify(formattedRows)
+              localStorage.setItem("StockRows", newRowStorage );
               setRows(formattedRows);
+              // console.log(localStorage)
           } catch(err) {
               console.log("thi is an error, ", err);
           }
@@ -249,7 +257,9 @@ const EnhancedTable = () => {
               series: responseData.series
               },
               responseData.yahooSummaryData,
-              responseData.imageInfo
+              responseData.imageInfo,
+              responseData.stockId,
+              abbreviateNumber(responseData.marketCap)
               )
             ]])
         }
@@ -262,7 +272,13 @@ const EnhancedTable = () => {
   
     const isSelected = (symbol) => selected.indexOf(symbol) !== -1;
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
-  
+    
+    const showStorage = () =>
+    {
+      let item = localStorage.getItem('storsgetime')
+      let parseItem = JSON.parse(item)
+      console.log(parseItem)
+    }
     const optionsCursorTrueWithMargin = {
       followCursor: true,
       shiftX: 10,
@@ -271,8 +287,10 @@ const EnhancedTable = () => {
     return (
       
       <div className={classes.root}>
+        {/* <button onClick={showStorage}>findStorage</button> */}
             {/* header */}
           <div className="header">
+            <button onClick={showStorage}>showStorage</button>
             <Container className="header" maxWidth="sm" className="text-center">
               <h1 >Welcome to your stock portfolio</h1>
                   {/* input */}
@@ -370,7 +388,8 @@ const EnhancedTable = () => {
                             <TableCell align="right">{abbreviateNumber(row.marketCap)}</TableCell>
                             <TableCell align="right">{row.sharePrice}</TableCell>
                             <TableCell className="expand-trigger" align="right">
-                              <ViewInfo 
+                              <ViewInfo
+                                row={row} 
                                 data={row.chart}
                                 id={row.chart.stockId}
                                 name={row.symbol}

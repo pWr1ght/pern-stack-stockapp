@@ -3,6 +3,7 @@
 // import Highcharts from "highcharts/highstock";
 // import HighchartsReact from "highcharts-react-official";
 import React, {useRef} from 'react'
+import {useHistory} from 'react-router-dom'
 import indicators from "highcharts/indicators/indicators-all.js";
 import dragPanes from "highcharts/modules/drag-panes.js";
 import annotationsAdvanced from "highcharts/modules/annotations-advanced.js";
@@ -16,6 +17,7 @@ import downloadFile from  "highcharts/modules/exporting"
 // import "./style.css";
 import Highchartsd from "highcharts/highstock";
 import HighchartsReact from "highcharts-react-official";
+
 
 
 // init the module
@@ -643,14 +645,21 @@ const options = {
       }]
     }
 };
+
+const onHandleBack = () => {
+  console.log("hello")
+  history.goBack();
+}
   
 
     // const newFunc = () => {
     //     console.log(chart)
     //     chart.current.chart.stockTools.visible = false;
     // }
+    const history = useHistory()
     return (
         <div>
+          <i onClick={onHandleBack} class="far fa-arrow-alt-circle-left"></i>
             {/* dlado
             <button onClick={newFunc}>hel</button> */}
             <HighchartsReact options={options} constructorType={'stockChart'} highcharts={Highchartsd} />

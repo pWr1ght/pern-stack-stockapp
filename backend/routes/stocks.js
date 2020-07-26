@@ -188,7 +188,8 @@ router.route("/").post( async (req, res) => {
     let {ticker, user_id, from, to} = req.body;
     try {
         const candleStockChartResponse = await axios.get(`https://finnhub.io/api/v1/stock/candle?symbol=${ticker}&resolution=D&from=${from}&to=${to}&token=${process.env.APIKEY_FINHUB}`)
-        if(!candleStockChartResponse.data.error) {
+        console.log(candleStockChartResponse.data)
+        if(candleStockChartResponse.data.s == 'ok') {
         console.log("no error--------")
         // console.log("candleStock error", candleStockChartResponse.data)
         const postStock =  await pool.query('INSERT INTO stock (user_id, ticker) VALUES (2, $1) RETURNING *',[ticker]);
