@@ -41,3 +41,23 @@
     margin-bottom: 20px;
     color: white;
 } */
+
+/* .MuiTableBody-root > .MuiTableRow-root:nth-child(2n) {
+    background: lightblue;
+}
+
+.MuiToolbar-root{
+    background-color: rgb(64,80,181);
+    color: white;
+}
+
+<Grow
+                          in={rows}
+                          style={{ transformOrigin: '0 0 0' }}
+                          {...(rows ? { timeout: 1000 } : [])}
+                          >
+
+
+                          </Grow>
+
+                          import Grow from '@material-ui/core/Grow'; */
