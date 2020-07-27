@@ -12,6 +12,8 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import {TextField, Button} from '@material-ui/core/'
 import {TableContext} from '../context/tableContext';
+import {StockListContext} from '../context/stockListContext';
+import {StockPortfolioContext} from '../context/stockPortfolio';
 import EnhancedTableHead from './tableHead'
 import EnhancedTableToolbar from './tableToolBar'
 import Container from '@material-ui/core/Container';
@@ -54,7 +56,8 @@ const useStyles = makeStyles((theme) => ({
   
 const EnhancedTable = () => {
     const {rows, setRows, money, setMoney} = useContext(TableContext)
-    
+    const {stockList, setStockList, addStock, removeStock} = useContext(StockListContext);
+    const {setPortfolio, portfolios, portfolioCount, addPortfolio, removePortfolio, portfolioCountUp, portfolioCountDown, totalPortFolioCount } = useContext(StockPortfolioContext)
     const classes = useStyles();
     const [order, setOrder] = React.useState('asc');
     const [orderBy, setOrderBy] = React.useState('stockChange');
@@ -91,17 +94,18 @@ const EnhancedTable = () => {
     }
 
     useEffect( () => {
-      let rowStorage = localStorage.getItem('StockRows')
-      if(rowStorage){
-        setRows(JSON.parse(rowStorage))
-      }
+      // let rowStorage = localStorage.getItem('StockRows')
+      // if(rowStorage){
+      //   setRows(JSON.parse(rowStorage))
+      // }
       const fetchData = async () => {
           try{
               //initiate the date for to and from for api call
               const now = new Date().getTime()
               const current = parseInt(now/1000)
               const month = current - (86400 * 31)
-  
+              
+              
               const totalStockInfoResponse = await GetStocks.get('/', {
                   params:{ from: month, to: current}
               })
@@ -113,8 +117,8 @@ const EnhancedTable = () => {
                 return createData(row.symbol, row.priceChange, row.marketCap, row.currentPrice, {stockId: row.stockId, options: row.options, series: row.series}, row.yahooSummaryData, row.imageInfo, row.stockId, abbreviateNumber(row.marketCap))
               })
               setLoading(true)
-              let newRowStorage = JSON.stringify(formattedRows)
-              localStorage.setItem("StockRows", newRowStorage );
+              // let newRowStorage = JSON.stringify(formattedRows)
+              // localStorage.setItem("StockRows", newRowStorage);
               setRows(formattedRows);
           } catch(err) {
               console.log("thi is an error, ", err);
@@ -227,15 +231,44 @@ const EnhancedTable = () => {
           from: month,
           to: current
         })
+        
 
         if(response.data.length == 0) {
           console.log("ticker not supported")
           setSymbolError(true)
         } else {
+          
+          // let specificArrayInObject = portfolios[portfolioCount]
+          // specificArrayInObject.portfolio.push("APPL") 
+          // setPortfolio((prevState) => [...prevState, { ...prevState[portfolioCount], portfolio: [...prevState[portfolioCount].portfolio, "AAPL"] }])
+          // setPortfolio((prevState) => )
+          // setPortfolio((prevState) => [...prevState, ...prevState[portfolioCount].portfolio])
+          addStock(currentTicker, 1)
           setSymbolError(false)
           console.log(response.data)
           const responseData = rearangeData(response.data)
           console.log("adding", responseData)
+
+          setPortfolio((prevData => 
+            prevData.map(item => (item.portfolioNum == portfolioCount ?
+               {...item, portfolio: [...item.portfolio,...[createData(`${currentTicker}`,
+               responseData.priceChange,
+               responseData.marketCap,
+               responseData.currentPrice,
+               {
+               stockId: responseData.stockId,
+               options: responseData.options,
+               series: responseData.series
+               },
+               responseData.yahooSummaryData,
+               responseData.imageInfo,
+               responseData.stockId,
+               abbreviateNumber(responseData.marketCap)
+               )
+             ]]} :
+                item))))
+
+
           setRows((prevRows) => 
             [...prevRows,...[createData(`${currentTicker}`,
               responseData.priceChange,
@@ -251,7 +284,9 @@ const EnhancedTable = () => {
               responseData.stockId,
               abbreviateNumber(responseData.marketCap)
               )
-            ]])
+            ]]
+          )
+
         }
       }
       else {
@@ -265,9 +300,10 @@ const EnhancedTable = () => {
     
     const showStorage = () =>
     {
-      let item = localStorage.getItem('storsgetime')
-      let parseItem = JSON.parse(item)
-      console.log(parseItem)
+      // let item = localStorage.getItem('stockList')
+      // let parseItem = JSON.parse(item)
+      console.log(stockList)
+      // console.log(parseItem)
     }
     const optionsCursorTrueWithMargin = {
       followCursor: true,
@@ -280,6 +316,10 @@ const EnhancedTable = () => {
         {/* <button onClick={showStorage}>findStorage</button> */}
             {/* header */}
           <div className="header">
+            <button onClick={addPortfolio}>add Portfolio</button>
+            <button onClick={portfolioCountDown}>down Portfolio</button>
+            <button onClick={portfolioCountUp}>up Portfolio</button>
+            <button onClick={() => console.log(portfolios.length)}>count Portfolio</button>
             <button onClick={showStorage}>showStorage</button>
             <Container className="header" maxWidth="sm" className="text-center">
               <h1 >Welcome to your stock portfolio</h1>
