@@ -2,7 +2,11 @@
     width: 450px;
     height: 142px;
 }
-.MuiToolbar-gutters.makeStyles-root-5.MuiToolbar-regular.MuiToolbar-root {
+/* .MuiToolbar-gutters.makeStyles-root-5.MuiToolbar-regular.MuiToolbar-root {
+    background-color: rgb(64,80,181);
+    color: white;
+} */
+.MuiToolbar-root{
     background-color: rgb(64,80,181);
     color: white;
 }
@@ -19,6 +23,14 @@
     display: flex;
     justify-content: center;
 }
+
+.MuiTableBody-root > .MuiTableRow-root:nth-child(2n) {
+    background: lightblue;
+}
+
+
+
+                        
 /* .searchHeader.h1 {
     color: white;
 } */
