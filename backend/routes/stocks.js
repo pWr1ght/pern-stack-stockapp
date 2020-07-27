@@ -85,13 +85,14 @@ router.route("/singlestock/reccomendation").get( async (req, res) => {
 
 router.route("/").get( async (req, res) => {
     try {
-        let {to, from} = req.query
+        let {list, to, from} = req.query
         // console.log("showing to", to)
         // console.log("showing from", from)
 
 
         const getAllStocksResponse = await pool.query('SELECT * FROM stock')
-        const tickers = getAllStocksResponse.rows 
+        // const tickers = getAllStocksResponse.rows 
+        const tickers = list
         //|| []
         // console.log(tickers)
         const newSymbols = []
@@ -183,7 +184,6 @@ router.route("/").get( async (req, res) => {
 //     }
 // });
 
-// need to update add
 router.route("/").post( async (req, res) => {
     let {ticker, user_id, from, to} = req.body;
     try {

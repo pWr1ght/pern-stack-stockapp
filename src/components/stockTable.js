@@ -92,18 +92,16 @@ const EnhancedTable = () => {
 
     useEffect( () => {
       let rowStorage = localStorage.getItem('StockRows')
-      if(rowStorage){
-        setRows(JSON.parse(rowStorage))
-      }
-      const fetchData = async () => {
+      const fetchData = async (rowStorage) => {
           try{
               //initiate the date for to and from for api call
               const now = new Date().getTime()
               const current = parseInt(now/1000)
               const month = current - (86400 * 31)
-  
+              let stocksP = JSON.parse(rowStorage)
+              const stockSymbols = stocksP.map(item => item.symbol)
               const totalStockInfoResponse = await GetStocks.get('/', {
-                  params:{ from: month, to: current}
+                  params:{ list: stockSymbols, from: month, to: current}
               })
 
               const totalModifiedStockData = totalStockInfoResponse.data[0]
@@ -113,14 +111,16 @@ const EnhancedTable = () => {
                 return createData(row.symbol, row.priceChange, row.marketCap, row.currentPrice, {stockId: row.stockId, options: row.options, series: row.series}, row.yahooSummaryData, row.imageInfo, row.stockId, abbreviateNumber(row.marketCap))
               })
               setLoading(true)
-              let newRowStorage = JSON.stringify(formattedRows)
-              localStorage.setItem("StockRows", newRowStorage );
+              // let newRowStorage = JSON.stringify(formattedRows)
+              // localStorage.setItem("StockRows", newRowStorage);
               setRows(formattedRows);
           } catch(err) {
               console.log("thi is an error, ", err);
           }
       };
-      fetchData()
+      if(rowStorage) {
+        fetchData(rowStorage)
+      }
     }, []);
 
     // function that descends the rows

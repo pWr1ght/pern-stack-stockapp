@@ -69,10 +69,11 @@ const EnhancedTableToolbar = (props) => {
         //         return row.chart;
         //     }
         // })
-        for(let i=0; i < deleteRowArray.length; i++) {
-            const response = await GetStocks.delete(`/${deleteRowArray[i]}`)
-        }
-        console.log("this is deleted, ", deleteRowArray)
+        //This is when using a database
+        // for(let i=0; i < deleteRowArray.length; i++) {
+        //     const response = await GetStocks.delete(`/${deleteRowArray[i]}`)
+        // }
+        // console.log("this is deleted, ", deleteRowArray)
 
         setRows(stayRowArray);
         console.log("this is leftOver", stayRowArray)
