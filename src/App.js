@@ -8,6 +8,7 @@ import {CurrentStockContextProvider} from './context/currentStockContext'
 import {StockListContextProvider} from './context/stockListContext'
 import HomePage from './components/homePage'
 import InteractiveBigChart from './components/interactiveChart'
+import { AnimatedSwitch } from 'react-router-transition';
 
 function App() {
   return (
@@ -16,11 +17,16 @@ function App() {
         <TableContextProvider>
           <CurrentStockContextProvider>
           <Router>
-            <Switch>
+          <AnimatedSwitch
+      atEnter={{ opacity: 0 }}
+      atLeave={{ opacity: 0 }}
+      atActive={{ opacity: 1 }}
+      
+    >
               <Route exact path="/" component={HomePage}></Route>
               <Route exact path="/view/:id/:name/" component={ViewStock}></Route>
               <Route exact path="/view/interactive/:id/:name/" component={InteractiveBigChart}></Route>
-            </Switch>
+              </AnimatedSwitch>
           </Router>
             {/* <EnhancedTable/> */}
           </CurrentStockContextProvider>

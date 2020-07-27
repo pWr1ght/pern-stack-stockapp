@@ -2,8 +2,11 @@ import React from 'react'
 import StockTable from './stockTable'
 const HomePage = () => {
     return (
-        <div>
+        <div style={{display:'flex'}}>
             <StockTable/>
+            <div>
+                Hello
+            </div>
         </div>
     )
 }

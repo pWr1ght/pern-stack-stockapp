@@ -27,15 +27,16 @@ import '../styles/style.css'
 import ReactHover from 'react-hover'
 import HoverSymbol from './hoverSymbol';
 import LinearProgress from '@material-ui/core/LinearProgress';
+import Grow from '@material-ui/core/Grow';
 
 const useStyles = makeStyles((theme) => ({
     root: {
       width: '100%',
-      background: 'rgb(40,44,52)'
+      background: 'rgb(141,164,252)',
     },
     paper: {
       width: '100%',
-      marginBottom: theme.spacing(2),
+      marginBottom: theme.spacing(1),
     },
     table: {
       minWidth: 750,
@@ -385,6 +386,11 @@ const EnhancedTable = () => {
                         const isItemSelected = isSelected(row.symbol);
                         const labelId = `enhanced-table-checkbox-${index}`;
                         return (
+                          <Grow
+                          in={rows}
+                          style={{ transformOrigin: '0 0 0' }}
+                          {...(rows ? { timeout: 1000 } : [])}
+                          >
                           <TableRow
                             hover
                             onClick={(event) => handleClick(event, row.symbol)}
@@ -429,10 +435,11 @@ const EnhancedTable = () => {
                               </ViewInfo>
                             </TableCell>
                           </TableRow>
-                        
+                          </Grow>
                         );
                       })
                   }
+                  
                   {emptyRows > 0 && (
                     <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
                       <TableCell colSpan={6} />

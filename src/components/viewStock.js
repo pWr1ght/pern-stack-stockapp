@@ -17,6 +17,7 @@ import {CurrentStockContext} from '../context/currentStockContext';
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
+    background: 'rgb(141,164,252)'
   },
   paper: {
     padding: theme.spacing(2),
@@ -73,7 +74,7 @@ const ViewStock = () => {
 
     const classes = useStyles();
     return (
-        <div>
+        <div  className={classes.root}>
             <button onClick={() => console.log(currentStockInfo)}>currentInfo</button>
             <Button variant="outlined" size="large" color="primary">
                 <i onClick={onHandleBack} class="far fa-arrow-alt-circle-left"></i>
