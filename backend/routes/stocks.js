@@ -93,6 +93,7 @@ router.route("/").get( async (req, res) => {
         const getAllStocksResponse = await pool.query('SELECT * FROM stock')
         // const tickers = getAllStocksResponse.rows 
         const tickers = list
+        console.log(tickers)
         //|| []
         // console.log(tickers)
         const newSymbols = []
@@ -100,9 +101,10 @@ router.route("/").get( async (req, res) => {
         // if(tickers.length > 0) {
             //pushing the data into a list
             tickers.forEach(element => {
-                newSymbols.push(element.ticker)
-                stockId.push(element.stock_id)
+                newSymbols.push(element)
+                stockId.push(2)
             })
+            console.log(newSymbols)
         // }
         // console.log(newSymbols)
         // console.log(tickers)
@@ -134,9 +136,9 @@ router.route("/").get( async (req, res) => {
 
             //finhub Api
 
-            let yFinanceCandleResponse = await axios.get(`https://finnhub.io/api/v1/stock/candle?symbol=${tickers[i].ticker}&resolution=D&from=${from}&to=${to}&token=${process.env.APIKEY_FINHUB}`)
+            let yFinanceCandleResponse = await axios.get(`https://finnhub.io/api/v1/stock/candle?symbol=${tickers[i]}&resolution=D&from=${from}&to=${to}&token=${process.env.APIKEY_FINHUB}`)
             const yFinanceCandleData = yFinanceCandleResponse.data
-            let finCurrentPriceData = await getYahooData.getSingleStockInfo(tickers[i].ticker)
+            let finCurrentPriceData = await getYahooData.getSingleStockInfo(tickers[i])
             // let finCurrentPriceResponse = await axios.get(`https://finnhub.io/api/v1/quote?symbol=AAPL&token=${process.env.APIKEY_FINHUB}`)
             // const finCurrentPriceData = [finCurrentPriceResponse.data]
             // console.log(yFinanceCandleResponse)
@@ -150,14 +152,14 @@ router.route("/").get( async (req, res) => {
                 var name = finCurrentPriceData.displayName.split(" ")[0]
             }
             else{
-                finCurrentPriceData = await getYahooData.getSingleStockInfo(tickers[i].ticker)
+                finCurrentPriceData = await getYahooData.getSingleStockInfo(tickers[i])
                 var name = finCurrentPriceData.displayName.split(" ")[0]
             }
             
             const pictureData = await axios.get(`https://autocomplete.clearbit.com/v1/companies/suggest?query=${name}`)
             
             yFinanceCandleData.imageInfo = pictureData.data[0]
-            yFinanceCandleData.symbol = tickers[i].ticker
+            yFinanceCandleData.symbol = tickers[i]
             yFinanceCandleData.stockId = stockId[i]
             listOfTickerData.push(yFinanceCandleData)
             
