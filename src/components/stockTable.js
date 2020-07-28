@@ -92,7 +92,7 @@ const EnhancedTable = () => {
     }
 
     useEffect( () => {
-      let rowStorage = localStorage.getItem('StockRows')
+      // let rowStorage = localStorage.getItem('StockRows')
       const fetchData = async (rowStorage) => {
           try{
               //initiate the date for to and from for api call
@@ -119,9 +119,7 @@ const EnhancedTable = () => {
               console.log("thi is an error, ", err);
           }
       };
-      if(rowStorage) {
-        fetchData(rowStorage)
-      }
+        fetchData(localStorage.getItem('StockRows'))
     }, []);
 
     // function that descends the rows
