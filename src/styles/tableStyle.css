@@ -2,10 +2,10 @@
     width: 450px;
     height: 142px;
 }
-/* .MuiToolbar-gutters.makeStyles-root-5.MuiToolbar-regular.MuiToolbar-root {
-    background-color: rgb(64,80,181);
+.MuiToolbar-gutters.makeStyles-root-5.MuiToolbar-regular.MuiToolbar-root {
+    background-color: #022B3C;
     color: white;
-} */
+}
 .MuiToolbar-root{
     background-color:#022B3C;
     color: white;

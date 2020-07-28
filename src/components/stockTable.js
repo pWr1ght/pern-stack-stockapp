@@ -61,7 +61,7 @@ const EnhancedTable = () => {
     const [orderBy, setOrderBy] = React.useState('stockChange');
     const [selected, setSelected] = React.useState([]);
     const [page, setPage] = React.useState(0);
-    const [dense, setDense] = React.useState(false);
+    const [dense, setDense] = React.useState(true);
     const [chartWidth, setChartWidth] =  React.useState(false);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
     const [currentTicker, setCurrentTicker] = React.useState('');
