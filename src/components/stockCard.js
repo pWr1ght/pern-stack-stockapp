@@ -34,6 +34,7 @@ const useStyles = makeStyles({
 
 const StockCard = (props) => {
     const classes = useStyles();
+    const bull = <span className={classes.bullet}>•</span>;
     const getTime = (time) => {
       let date = new Date(time * 1000);
       var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];

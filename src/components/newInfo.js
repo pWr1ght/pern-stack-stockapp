@@ -10,9 +10,9 @@ const Charting = (props) => {
     let history = useHistory()
     
     const viewStock = async (id, name, row) => {
-    setCurrentStockInfo(row)
     let stringRow = JSON.stringify(row)
     localStorage.setItem("currentStockInfo", stringRow);
+    setCurrentStockInfo(JSON.parse(localStorage.getItem('currentStockInfo')))
     history.push({
         pathname: `/view/${id}/${name}`,
         financialData: props.financialData,

@@ -13,15 +13,17 @@ import Box from '@material-ui/core/Box'
 import StackChart from './stackChart'
 import StockNewsListItem from './stockNewsListItem.js'
 import {CurrentStockContext} from '../context/currentStockContext';
+import { red } from '@material-ui/core/colors';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    background: 'rgb(40,44,52)'
+    background: '#0C6BA7'
   },
   paper: {
     padding: theme.spacing(2),
     color: theme.palette.text.secondary,
+    background: '#C3EBF6'
   },
 }));
 
@@ -41,8 +43,8 @@ const ViewStock = () => {
     }
 
     useEffect( () => {
-        let currentStockRow = JSON.parse(localStorage.getItem("currentStockInfo"))
-        setCurrentStockInfo(currentStockRow)
+        // let currentStockRow = JSON.parse(localStorage.getItem("currentStockInfo"))
+        // setCurrentStockInfo(currentStockRow)
         //setting up BigChart data
         const fetchChartData = async (id, name) => {
             try {
@@ -68,7 +70,7 @@ const ViewStock = () => {
             }
         }
         fetchChartData(id, name)
-        fetchNews(currentStockRow.financialData.displayName)
+        fetchNews(currentStockInfo.financialData.displayName)
     }, [])
     
 

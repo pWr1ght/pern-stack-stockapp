@@ -7,12 +7,12 @@
     color: white;
 } */
 .MuiToolbar-root{
-    background-color: rgb(64,80,181);
+    background-color:#022B3C;
     color: white;
 }
 
 .MuiToolbar-gutters.MuiTablePagination-toolbar.MuiToolbar-regular.MuiToolbar-root {
-    border: 1px solid rgb(64,80,181);
+    border: 1px solid #022B3C;
 }
 
 .tableFormControl{

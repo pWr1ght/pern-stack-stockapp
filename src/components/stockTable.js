@@ -30,7 +30,7 @@ import Grow from '@material-ui/core/Grow';
 const useStyles = makeStyles((theme) => ({
     root: {
       width: '100%',
-      background: 'rgb(40,44,52)'
+      background: '#0C6BA7'
     },
     paper: {
       width: '100%',
@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
     },
     table: {
       minWidth: 750,
-      border: "1px solid rgb(64,80,181);"
+      border: "2px solid #0C6BA7"
     },
     visuallyHidden: {
       border: 0,
