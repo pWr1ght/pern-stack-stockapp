@@ -7,13 +7,12 @@ export const TableContextProvider = props => {
         return { symbol, stockChange, marketCap, sharePrice, chart};
     }
     const [rows, setRows] = useState(JSON.parse(localStorage.getItem('StockRows')))
-   const [money, setMoney] = useState([createData('BA', 305, 3.7, 67, 4.3)])
    useEffect(() => {
        localStorage.setItem('StockRows', JSON.stringify(rows))
    }, [rows])
 
    return (
-       <TableContext.Provider value={{rows, setRows, money, setMoney}}>
+       <TableContext.Provider value={{rows, setRows}}>
            {props.children}
        </TableContext.Provider>
    )

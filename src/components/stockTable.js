@@ -10,15 +10,13 @@ import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
-import {TextField, Button} from '@material-ui/core/'
 import {TableContext} from '../context/tableContext';
 import EnhancedTableHead from './tableHead'
 import EnhancedTableToolbar from './tableToolBar'
 import Container from '@material-ui/core/Container';
-import ButtonGroup from '@material-ui/core/ButtonGroup';
-import GetStocks from '../api/getStocks'
-import {rearangeData} from '../scripts/sortChartData';
-import ViewInfo from './newInfo';
+import GetStocks from '../backendLink/getBackendURL'
+import {rearangeData} from '../sortDataFunctions/sortChartData';
+import ViewInfo from './rowChart';
 import StockArrow from './stockArrow';
 import '../styles/tableStyle.css'
 import '../styles/style.css'
@@ -26,6 +24,7 @@ import ReactHover from 'react-hover'
 import HoverSymbol from './hoverSymbol';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Grow from '@material-ui/core/Grow';
+import SearchHeader from './headerSearch'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -54,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
   }));
   
 const EnhancedTable = () => {
-    const {rows, setRows, money, setMoney} = useContext(TableContext)
+    const {rows, setRows} = useContext(TableContext)
     
     const classes = useStyles();
     const [order, setOrder] = React.useState('asc');
@@ -64,8 +63,8 @@ const EnhancedTable = () => {
     const [dense, setDense] = React.useState(true);
     const [chartWidth, setChartWidth] =  React.useState(false);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
-    const [currentTicker, setCurrentTicker] = React.useState('');
-    const [symbolError, setSymbolError] = React.useState(false)
+    // const [currentTicker, setCurrentTicker] = React.useState('');
+    // const [symbolError, setSymbolError] = React.useState(false)
     const [loading, setLoading] = React.useState(false)
      
 
@@ -92,15 +91,14 @@ const EnhancedTable = () => {
     }
 
     useEffect( () => {
-      // let rowStorage = localStorage.getItem('StockRows')
-      const fetchData = async (rowStorage) => {
+      let rowStorage = JSON.parse(localStorage.getItem('StockRows'))
+      const fetchData = async () => {
           try{
               //initiate the date for to and from for api call
               const now = new Date().getTime()
               const current = parseInt(now/1000)
               const month = current - (86400 * 31)
-              let stocksP = JSON.parse(rowStorage)
-              const stockSymbols = stocksP.map(item => item.symbol)
+              const stockSymbols = rowStorage.map(item => item.symbol)
               const totalStockInfoResponse = await GetStocks.get('/', {
                   params:{ list: stockSymbols, from: month, to: current}
               })
@@ -108,19 +106,23 @@ const EnhancedTable = () => {
               const totalModifiedStockData = totalStockInfoResponse.data[0]
                   .map(element => rearangeData(element))
               let formattedRows = totalModifiedStockData.map(row => {
-                // console.log(row)
                 return createData(row.symbol, row.priceChange, row.marketCap, row.currentPrice, {stockId: row.stockId, options: row.options, series: row.series}, row.yahooSummaryData, row.imageInfo, row.stockId, abbreviateNumber(row.marketCap))
               })
               setLoading(true)
-              // let newRowStorage = JSON.stringify(formattedRows)
-              // localStorage.setItem("StockRows", newRowStorage);
               setRows(formattedRows);
           } catch(err) {
               console.log("thi is an error, ", err);
+              //do a small alert that says, please refresh
           }
       };
-        fetchData(localStorage.getItem('StockRows'))
+      if(rowStorage && (rowStorage.length !== 0) ) {
+        fetchData()
+      } else {
+        setLoading(true)
+      }
     }, []);
+
+
 
     // function that descends the rows
     function descendingComparator(a, b, orderBy) {
@@ -131,25 +133,25 @@ const EnhancedTable = () => {
             return 1;
         }
         return 0;
-      }
+    }
   
     
     //function that compares to descend
     function getComparator(order, orderBy) {
-        return order === 'desc'
-        ? (a, b) => descendingComparator(a, b, orderBy)
-        : (a, b) => -descendingComparator(a, b, orderBy);
-      }
+      return order === 'desc'
+      ? (a, b) => descendingComparator(a, b, orderBy)
+      : (a, b) => -descendingComparator(a, b, orderBy);
+    }
 
     function stableSort(array, comparator) {
-        const stabilizedThis = array.map((el, index) => [el, index]);
-        stabilizedThis.sort((a, b) => {
-          const order = comparator(a[0], b[0]);
-          if (order !== 0) return order;
-          return a[1] - b[1];
-        });
-        return stabilizedThis.map((el) => el[0]);
-      }
+      const stabilizedThis = array.map((el, index) => [el, index]);
+      stabilizedThis.sort((a, b) => {
+        const order = comparator(a[0], b[0]);
+        if (order !== 0) return order;
+        return a[1] - b[1];
+      });
+      return stabilizedThis.map((el) => el[0]);
+    }
 
     const handleRequestSort = (event, property) => {
       const isAsc = orderBy === property && order === 'asc';
@@ -203,71 +205,9 @@ const EnhancedTable = () => {
       setChartWidth(event.target.checked);
     };
   
-    const onSubmitForm = async (event) => {
-      event.preventDefault();
-
-      // let now = new Date().getTime()
-      // let current = parseInt(now/1000)
-      // let month = current - (86400 * 31)
-      // if(!rows.includes(currentTicker).trim())
-      let submit = true;
-      rows.map(row => {
-        if((row.symbol) == currentTicker.trim()){
-          submit = false;
-        }
-      })
-      if(submit) {
-        let now = new Date().getTime()
-        let current = parseInt(now/1000)
-        let month = current - (86400 * 31)
-        const response = await GetStocks.post('/', {
-          user_id: '2',
-          ticker: currentTicker,
-          from: month,
-          to: current
-        })
-
-        if(response.data.length == 0) {
-          console.log("ticker not supported")
-          setSymbolError(true)
-        } else {
-          setSymbolError(false)
-          console.log(response.data)
-          const responseData = rearangeData(response.data)
-          console.log("adding", responseData)
-          setRows((prevRows) => 
-            [...prevRows,...[createData(`${currentTicker}`,
-              responseData.priceChange,
-              responseData.marketCap,
-              responseData.currentPrice,
-              {
-              stockId: responseData.stockId,
-              options: responseData.options,
-              series: responseData.series
-              },
-              responseData.yahooSummaryData,
-              responseData.imageInfo,
-              responseData.stockId,
-              abbreviateNumber(responseData.marketCap)
-              )
-            ]])
-        }
-      }
-      else {
-        console.log("Already entered the stock")
-      }
-      setCurrentTicker('');
-    }
-  
     const isSelected = (symbol) => selected.indexOf(symbol) !== -1;
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
     
-    const showStorage = () =>
-    {
-      let item = localStorage.getItem('storsgetime')
-      let parseItem = JSON.parse(item)
-      console.log(parseItem)
-    }
     const optionsCursorTrueWithMargin = {
       followCursor: true,
       shiftX: 10,
@@ -276,146 +216,111 @@ const EnhancedTable = () => {
     return (
       
       <div className={classes.root}>
-        {/* <button onClick={showStorage}>findStorage</button> */}
-            {/* header */}
-          <div className="header">
-            <button onClick={showStorage}>showStorage</button>
-            <Container className="header" maxWidth="sm" className="text-center">
-              <h1 >Welcome to your stock portfolio</h1>
-                  {/* input */}
-                  <form onSubmit={onSubmitForm} noValidate autoComplete="off">
-                      <div className="searchTool">
-                        {!symbolError ? (
-                          <TextField id="standard-basic"
-                            label="Please Enter your stock ticker"
-                            text="text" className="form-control"
-                            value={currentTicker} 
-                            onChange={e => setCurrentTicker(e.target.value)}/>
-                          ) : (
-                            <TextField
-                            error
-                            className="form-control"
-                            id="standard-error-helper-text"
-                            label="Ticker not supported"
-                            value={currentTicker} 
-                            onChange={e => setCurrentTicker(e.target.value)}
-                          />
-                          ) 
-                        }
-                          <ButtonGroup
-                              color="primary"
-                              aria-label="contained primary button group"
-                              variant="contained"
-                          >
-                          <Button color="primary" type="submit">Add</Button>
-                          </ButtonGroup>
-                      </div>
-                  </form>
-            </Container>
-          </div>
-          <Container maxWidth={chartWidth ? false : 'lg'}>
-            <Paper className={classes.paper}>
-              
-              <EnhancedTableToolbar rows={rows} setSelected={setSelected} selected={selected} numSelected={selected.length} />
-              {loading ? (false) : (
-                <div className="loadingTable">
-                  <LinearProgress style={{width: "100%"}} />
-                </div>)}
-            <TableContainer>
-              <Table
-                className={classes.table}
-                aria-labelledby="tableTitle"
-                size={dense ? 'small' : 'medium'}
-                aria-label="enhanced table"
-              >
-                <EnhancedTableHead
-                  classes={classes}
-                  numSelected={selected.length}
-                  order={order}
-                  orderBy={orderBy}
-                  onSelectAllClick={handleSelectAllClick}
-                  onRequestSort={handleRequestSort}
-                  rowCount={rows.length}
-                />
-                <TableBody>
-                  {stableSort(rows, getComparator(order, orderBy))
-                      .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                      .map((row, index) => {
-                        const isItemSelected = isSelected(row.symbol);
-                        const labelId = `enhanced-table-checkbox-${index}`;
-                        return (
-                          <Grow
-                          in={rows}
-                          style={{ transformOrigin: '0 0 0' }}
-                          {...(rows ? { timeout: 1000 } : [])}
-                          > 
-                          <TableRow
-                            hover
-                            onClick={(event) => handleClick(event, row.symbol)}
-                            role="checkbox"
-                            aria-checked={isItemSelected}
-                            tabIndex={-1}
-                            key={row.symbol}
-                            selected={isItemSelected}
-                          >
-                          
-                            <TableCell padding="checkbox">
-                              <Checkbox
-                                checked={isItemSelected}
-                                inputProps={{ 'aria-labelledby': labelId }}
-                              />
-                            </TableCell>
-                            <TableCell component="th" id={labelId} scope="row" padding="none">
-                                <div style={{display:"flex"}}>
-                                  <ReactHover
-                                      options={optionsCursorTrueWithMargin}>
-                                      <ReactHover.Trigger type='trigger'>
-                                        <div><h2>{row.symbol}</h2></div>
-                                      </ReactHover.Trigger>
-                                      <ReactHover.Hover type='hover'>
-                                        <HoverSymbol image={row.imageInfo}/>
-                                      </ReactHover.Hover>
-                                  </ReactHover>
-                                </div>
-                            </TableCell>
-                            <TableCell align="right"><StockArrow break={true} dollarChange={row.financialData.regularMarketChange} percentageChange={row.financialData.regularMarketChangePercent}/></TableCell>
-                            <TableCell align="right">{abbreviateNumber(row.marketCap)}</TableCell>
-                            <TableCell align="right">{row.sharePrice}</TableCell>
-                            <TableCell className="expand-trigger" align="right">
-                              <ViewInfo
-                                row={row} 
-                                data={row.chart}
-                                id={row.chart.stockId}
-                                name={row.symbol}
-                                abbreviatedMarketCap = {abbreviateNumber(row.marketCap)}
-                                financialData={row.financialData}
-                              >
-                              </ViewInfo>
-                            </TableCell>
-                          </TableRow>
-                          </Grow>
-                        );
-                      })
-                  }
-                  {emptyRows > 0 && (
-                    <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
-                      <TableCell colSpan={6} />
-                    </TableRow>
-                  )}
-                </TableBody>
-              </Table>
-            </TableContainer>
-            <TablePagination
-              rowsPerPageOptions={[5, 10, 25]}
-              component="div"
-              count={rows.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              onChangePage={handleChangePage}
-              onChangeRowsPerPage={handleChangeRowsPerPage}
-            />
-            </Paper>
-          </Container>
+        {/* header */}
+        <SearchHeader/>
+        <Container maxWidth={chartWidth ? false : 'lg'}>
+          <Paper className={classes.paper}>
+            
+            <EnhancedTableToolbar rows={rows} setSelected={setSelected} selected={selected} numSelected={selected.length} />
+            {loading ? (false) : (
+              <div className="loadingTable">
+                <LinearProgress style={{width: "100%"}} />
+              </div>)}
+          <TableContainer>
+            <Table
+              className={classes.table}
+              aria-labelledby="tableTitle"
+              size={dense ? 'small' : 'medium'}
+              aria-label="enhanced table"
+            >
+              <EnhancedTableHead
+                classes={classes}
+                numSelected={selected.length}
+                order={order}
+                orderBy={orderBy}
+                onSelectAllClick={handleSelectAllClick}
+                onRequestSort={handleRequestSort}
+                rowCount={rows.length}
+              />
+              <TableBody>
+                {stableSort(rows, getComparator(order, orderBy))
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((row, index) => {
+                      const isItemSelected = isSelected(row.symbol);
+                      const labelId = `enhanced-table-checkbox-${index}`;
+                      return (
+                        <Grow
+                        in={rows}
+                        style={{ transformOrigin: '0 0 0' }}
+                        {...(rows ? { timeout: 1000 } : [])}
+                        > 
+                        <TableRow
+                          hover
+                          onClick={(event) => handleClick(event, row.symbol)}
+                          role="checkbox"
+                          aria-checked={isItemSelected}
+                          tabIndex={-1}
+                          key={row.symbol}
+                          selected={isItemSelected}
+                        >
+                        
+                          <TableCell padding="checkbox">
+                            <Checkbox
+                              checked={isItemSelected}
+                              inputProps={{ 'aria-labelledby': labelId }}
+                            />
+                          </TableCell>
+                          <TableCell component="th" id={labelId} scope="row" padding="none">
+                              <div style={{display:"flex"}}>
+                                <ReactHover
+                                    options={optionsCursorTrueWithMargin}>
+                                    <ReactHover.Trigger type='trigger'>
+                                      <div><h2>{row.symbol}</h2></div>
+                                    </ReactHover.Trigger>
+                                    <ReactHover.Hover type='hover'>
+                                      <HoverSymbol image={row.imageInfo}/>
+                                    </ReactHover.Hover>
+                                </ReactHover>
+                              </div>
+                          </TableCell>
+                          <TableCell align="right"><StockArrow break={true} dollarChange={row.financialData.regularMarketChange} percentageChange={row.financialData.regularMarketChangePercent}/></TableCell>
+                          <TableCell align="right">{abbreviateNumber(row.marketCap)}</TableCell>
+                          <TableCell align="right">{row.sharePrice}</TableCell>
+                          <TableCell className="expand-trigger" align="right">
+                            <ViewInfo
+                              row={row} 
+                              data={row.chart}
+                              id={row.chart.stockId}
+                              name={row.symbol}
+                              abbreviatedMarketCap = {abbreviateNumber(row.marketCap)}
+                              financialData={row.financialData}
+                            >
+                            </ViewInfo>
+                          </TableCell>
+                        </TableRow>
+                        </Grow>
+                      );
+                    })
+                }
+                {emptyRows > 0 && (
+                  <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
+                    <TableCell colSpan={6} />
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <TablePagination
+            rowsPerPageOptions={[5, 10, 25]}
+            component="div"
+            count={rows.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onChangePage={handleChangePage}
+            onChangeRowsPerPage={handleChangeRowsPerPage}
+          />
+          </Paper>
+        </Container>
         <Container className="tableFormControl">
           <FormControlLabel
             control={<Switch checked={dense} onChange={handleChangeDense} />}

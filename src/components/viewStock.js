@@ -1,7 +1,7 @@
 import React, {Fragment, useState, useEffect, useContext} from 'react';
 import {useParams, useHistory} from 'react-router-dom';
 import BigStockChart from './bigStockChart';
-import GetStocks from '../api/getStocks'
+import GetStocks from '../backendLink/getBackendURL'
 import Button from '@material-ui/core/Button';
 import { Container, Divider } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
@@ -13,7 +13,6 @@ import Box from '@material-ui/core/Box'
 import StackChart from './stackChart'
 import StockNewsListItem from './stockNewsListItem.js'
 import {CurrentStockContext} from '../context/currentStockContext';
-import { red } from '@material-ui/core/colors';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -25,6 +24,11 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.secondary,
     background: '#C3EBF6'
   },
+  button: {
+    margin: "20px",
+    color: "#C3EBF6",
+    background: "rgb(64,80,181)"
+  }
 }));
 
 
@@ -33,8 +37,8 @@ const ViewStock = () => {
     const {currentStockInfo, setCurrentStockInfo} = useContext(CurrentStockContext)
     const [bigChartData, setBigChartData] = useState([]);
     const [articles, setArticles] = useState([])
-    //passing params from route
     const {id, name} = useParams();
+    const classes = useStyles();
 
 
 
@@ -74,18 +78,16 @@ const ViewStock = () => {
     }, [])
     
 
-    const classes = useStyles();
     return (
         <div className={classes.root}>
-            <button onClick={() => console.log(currentStockInfo)}>currentInfo</button>
-            <Button variant="outlined" size="large" color="primary">
-                <i onClick={onHandleBack} class="far fa-arrow-alt-circle-left"></i>
+            <Button  onClick={onHandleBack} className={classes.button} variant="contained" size="large" color="black">
+                <i className="fa-lg fas fa-angle-double-left"></i>
             </Button>   
             <Container style={{maxWidth: "1500px"}}>
                 <Grid container spacing={3}>
                     <Grid item lg={8}>
                         <Paper className={classes.paper}>
-                            <BigStockChart id={id} name={name} bigChartData={bigChartData}/>
+                            <BigStockChart id={id} name={name} generalData={currentStockInfo.financialData} bigChartData={bigChartData}/>
                         </Paper>
                     </Grid>
                     <Grid item lg={4}>

@@ -2,30 +2,13 @@ import React, {useContext} from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { lighten, makeStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TablePagination from '@material-ui/core/TablePagination';
-import TableRow from '@material-ui/core/TableRow';
-import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import Paper from '@material-ui/core/Paper';
-import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
-import FormControl from '@material-ui/core/FormControl';
-import {Input, InputLabel, FormHelperText} from '@material-ui/core/';
-import {TextField, Button} from '@material-ui/core/'
 import {TableContext} from '../context/tableContext';
-import EnhancedTableHead from './tableHead'
-import GetStocks from '../api/getStocks'
 
 const useToolbarStyles = makeStyles((theme) => ({
     root: {
@@ -49,7 +32,7 @@ const useToolbarStyles = makeStyles((theme) => ({
 
 const EnhancedTableToolbar = (props) => {
     const classes = useToolbarStyles();
-    const {rows, setRows, money, setMoney} = useContext(TableContext)
+    const {rows, setRows} = useContext(TableContext)
     const {setSelected, selected, numSelected } = props;
 
     const deleteRow = async () => {
@@ -57,35 +40,24 @@ const EnhancedTableToolbar = (props) => {
         const stayRowArray = props.rows.filter(row => 
             !selected.includes(row.symbol)
         )
-        //google lodash
+
         const deleteRowArray = props.rows.filter(row => {
             if(selected.includes(row.symbol)) {
                 return row;
             }
         }).map(({chart}) => chart.stockId)
         
-        // const deleteRowArray = props.rows.filter(row => {
-        //     if(selected.includes(row.symbol)) {
-        //         return row.chart;
-        //     }
-        // })
-        //This is when using a database
-        // for(let i=0; i < deleteRowArray.length; i++) {
-        //     const response = await GetStocks.delete(`/${deleteRowArray[i]}`)
-        // }
-        // console.log("this is deleted, ", deleteRowArray)
-
         setRows(stayRowArray);
-        console.log("this is leftOver", stayRowArray)
-        console.log(selected)
+        // console.log("this is leftOver", stayRowArray)
+        // console.log(selected)
         setSelected([])
     }
 
     return (
         <Toolbar
-        className={clsx(classes.root, {
-            [classes.highlight]: numSelected > 0,
-        })}
+        // className={clsx(classes.root, {
+        //     [classes.highlight]: numSelected > 0,
+        // })}
         >
         {numSelected > 0 ? (
             <Typography className={classes.title} color="inherit" variant="subtitle1" component="div">

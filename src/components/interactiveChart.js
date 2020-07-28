@@ -9,6 +9,10 @@ import stockTools from "highcharts/modules/stock-tools.js";
 import downloadFile from  "highcharts/modules/exporting"
 import Highchartsd from "highcharts/highstock";
 import HighchartsReact from "highcharts-react-official";
+import { makeStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button'
+import { red } from '@material-ui/core/colors';
+import Box from '@material-ui/core/Box'
 
 
 
@@ -19,14 +23,22 @@ annotationsAdvanced(Highchartsd);
 priceIndicator(Highchartsd);
 fullScreen(Highchartsd);
 stockTools(Highchartsd);
-console.log(Highchartsd)
-// DownloadFile(Highchartsd);
 
+// DownloadFile(Highchartsd);
+const useStyles = makeStyles((theme) => ({
+  root: {
+    background: "#0C6BA7"
+  },
+  button: {
+    color: "#C3EBF6",
+    background: "rgb(64,80,181)"
+  }
+}));  
 
 const InteractiveChart = (props) => {
     const chart = useRef(null);
     const history = useHistory()
-    console.log("this is state,", props.location.state.stockData)
+    const classes = useStyles();
     
   var data = props.location.state.stockData;
   
@@ -110,6 +122,7 @@ const options = {
         return position;
       }
     },
+    chart: {height: 800},
     series: [{
       type: 'ohlc',
       id: 'aapl-ohlc',
@@ -142,8 +155,17 @@ const options = {
   }
   
   return (
-      <div>
-        <i onClick={onHandleBack} class="far fa-arrow-alt-circle-left"></i>
+      <div className={classes.root}>
+        <Box display="flex" p={1} color="#0C6BA7">
+              <Box p={1} flexGrow={1}  bgcolor="#0C6BA7">
+                <Button onClick={onHandleBack} className={classes.button} variant="contained" size="large" color="black">
+                  <i className="fa-lg fas fa-angle-double-left"></i>
+                </Button>
+              </Box>
+              <Box p={.5}  display="flex" justifyContent="center"  bgcolor="grey.300">
+                <p style={{marginBottom: "0"}}>Note: For best interactivity, please full screen the Chart</p>
+              </Box>
+        </Box>
           <HighchartsReact options={options} constructorType={'stockChart'} highcharts={Highchartsd} />
       </div>
   )

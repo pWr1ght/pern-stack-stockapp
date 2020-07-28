@@ -2,27 +2,22 @@ const router = require('express').Router();
 const pool = require('../db.js');
 const { route } = require('express/lib/router');
 const axios = require('axios');
-const fillInBlank = require('../../src/scripts/new').default;
 const { lookup, history } = require('yahoo-stocks');
 // const e = require('express');
 // const FinnhubAPI = require('@stoqey/finnhub');
 var parser = require('xml2json');
 const finnhub = require('finnhub');
-const dataOrganize = require('../../src/scripts/yFinFormat')
+const dataOrganize = require('../../src/sortDataFunctions/yFinFormat')
 const getYahooData = require('stock-info');
 const api_key = finnhub.ApiClient.instance.authentications['api_key'];
 api_key.apiKey = process.env.APIKEY_FINHUB// Replace this
 
 
-// const ModifyDataForChart = require('../../src/scripts/sortChartData');
-
 router.route("/singlestock/:id/:name").get( async (req, res) => {
     let {id,name} = req.params
-    // res.json([]);
     // uncomment when to use update on view
     try {
         const yFinanceCandleResponse = await history(`${name}`, {interval: '1d', range: '1y'})
-        // console.log(yFinanceCandleResponse.data)
         const yFinanceCandleRecords = yFinanceCandleResponse.records.map(record => {
             const {
                 time, open, high, low, close, volume
@@ -31,18 +26,6 @@ router.route("/singlestock/:id/:name").get( async (req, res) => {
         })
         
         res.json(yFinanceCandleRecords)
-        // let arrayOfCandleData = []
-        // yFinanceCandleResponse.records.forEach((candlestickObject) => {
-        //     let candleData = []
-        //     candleData.push((candlestickObject.time * 1000))
-        //     candleData.push((candlestickObject.open))
-        //     candleData.push((candlestickObject.high))
-        //     candleData.push((candlestickObject.low))
-        //     candleData.push((candlestickObject.close))
-        //     candleData.push((candlestickObject.volume))
-        //     arrayOfCandleData.push(candleData)
-        // })
-        // res.json(arrayOfCandleData)
     } catch(err) {
         console.log(err)
     }
@@ -51,18 +34,12 @@ router.route("/singlestock/:id/:name").get( async (req, res) => {
 
 router.route("/singlestock/news").get( async (req, res) => {
     let {stockName} = req.query;
-    console.log(stockName, "----------------------")
     try{
         // back up google news xml fetch api
         const newsResponse = await axios.get(`https://news.google.com/rss/search?q=stock+${stockName}&hl=en-US&gl=US&ceid=US:en`)
         var json = parser.toJson(newsResponse.data);
         let jsonObject = JSON.parse(json);
-        // console.log(jsonObject.rss.channel.item)
         res.json(jsonObject.rss.channel.item)
-
-        // const newsResponseFin = await axios.get(`https://finnhub.io/api/v1/company-news?symbol=AAPL&from=2020-04-30&to=2020-05-01&token=${process.env.APIKEY_FINHUB}`)
-        // console.log(newsResponseFin.data)
-        // res.json(newsResponseFin.data)
     }
     catch(err) {
         console.log("did not get the news")
@@ -75,7 +52,6 @@ router.route("/singlestock/reccomendation").get( async (req, res) => {
     try{
         const recommendationResponseFin = await axios.get(`https://finnhub.io/api/v1/stock/recommendation?symbol=${stockName}&token=${process.env.APIKEY_FINHUB}`)
         
-        // console.log(recommendationResponseFin.data)
         res.json(recommendationResponseFin.data)
     }
     catch(err) {
@@ -86,28 +62,16 @@ router.route("/singlestock/reccomendation").get( async (req, res) => {
 router.route("/").get( async (req, res) => {
     try {
         let {list, to, from} = req.query
-        // console.log("showing to", to)
-        // console.log("showing from", from)
 
 
-        const getAllStocksResponse = await pool.query('SELECT * FROM stock')
-        // const tickers = getAllStocksResponse.rows 
+        // const getAllStocksResponse = await pool.query('SELECT * FROM stock')
         const tickers = list
-        console.log(tickers)
-        //|| []
-        // console.log(tickers)
         const newSymbols = []
         const stockId = []
-        // if(tickers.length > 0) {
-            //pushing the data into a list
-            tickers.forEach(element => {
-                newSymbols.push(element)
-                stockId.push(2)
-            })
-            console.log(newSymbols)
-        // }
-        // console.log(newSymbols)
-        // console.log(tickers)
+        tickers.forEach(element => {
+            newSymbols.push(element)
+            stockId.push(2)
+        })
         let listOfTickerData =[]
         for(let i = 0; i < tickers.length; i++) {
             // yahoo Api
@@ -122,26 +86,12 @@ router.route("/").get( async (req, res) => {
             // console.log(finHubMarketPofrileResponse.data)
             // listOfTickerData.push(yFinanceCandleResponse)
             // console.log(listOfTickerData)
-            
-            // promise example
-            // if(yFinanceCandleData.s === "no_data")
-            // {
-            //     await new Promise((resolve) => {
-            //         setTimeout(() => {
-            //             resolve()
-            //         }, 1000)
-            //     })
-            //     yFinanceCandleResponse = await axios.get(`https://finnhub.io/api/v1/stock/candle?symbol=${tickers[i].ticker}&resolution=D&from=${from}&to=${to}&token=${process.env.APIKEY_FINHUB}`)
-            // }
 
             //finhub Api
 
             let yFinanceCandleResponse = await axios.get(`https://finnhub.io/api/v1/stock/candle?symbol=${tickers[i]}&resolution=D&from=${from}&to=${to}&token=${process.env.APIKEY_FINHUB}`)
             const yFinanceCandleData = yFinanceCandleResponse.data
             let finCurrentPriceData = await getYahooData.getSingleStockInfo(tickers[i])
-            // let finCurrentPriceResponse = await axios.get(`https://finnhub.io/api/v1/quote?symbol=AAPL&token=${process.env.APIKEY_FINHUB}`)
-            // const finCurrentPriceData = [finCurrentPriceResponse.data]
-            // console.log(yFinanceCandleResponse)
             yFinanceCandleData.dataSummary = finCurrentPriceData
             if(!yFinanceCandleData.dataSummary.trailingPE) {
                 yFinanceCandleData.dataSummary.trailingPE = "N/A";
@@ -163,28 +113,12 @@ router.route("/").get( async (req, res) => {
             yFinanceCandleData.stockId = stockId[i]
             listOfTickerData.push(yFinanceCandleData)
             
-            // console.log(listOfTickerData)
         }
-        // lookup('AAPL').then(response => {
-        //     console.log(response);
-        // });
-        // listOfTickerData = [listOfTickerData]
-        // listOfTickerData.push(newSymbols)
-        // console.log(listOfTickerData)
         res.json([listOfTickerData, newSymbols])
     } catch(err) {
         console.log("Error: ",err);
     }
 });
-
-// router.route("/").get( async (req, res) => {
-//     try {
-//         const getAllStocks = await pool.query('SELECT * FROM stock');
-//         res.json(getAllStocks.rows);
-//     } catch(err) {
-//         console.log(err.message);
-//     }
-// });
 
 router.route("/").post( async (req, res) => {
     let {ticker, user_id, from, to} = req.body;
@@ -204,11 +138,6 @@ router.route("/").post( async (req, res) => {
         candleStockChartResponse.data.dataSummary = finCurrentPriceData
         candleStockChartResponse.data.imageInfo = pictureData.data[0]
 
-        
-        // const modifiedData = ModifyDataForChart.test(hello.data)
-        // console.log(modifiedData.data)
-        // res.json(modifiedData)
-        console.log(candleStockChartResponse.data)
         res.json(candleStockChartResponse.data)
         } else {
             console.log("error--------")
