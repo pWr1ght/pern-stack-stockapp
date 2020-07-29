@@ -6,7 +6,7 @@ export const TableContextProvider = props => {
     function createData(symbol, stockChange, marketCap, sharePrice, chart) {
         return { symbol, stockChange, marketCap, sharePrice, chart};
     }
-    const [rows, setRows] = useState(JSON.parse(localStorage.getItem('StockRows')))
+    const [rows, setRows] = useState(JSON.parse(localStorage.getItem('StockRows') || []))
    useEffect(() => {
        localStorage.setItem('StockRows', JSON.stringify(rows))
    }, [rows])

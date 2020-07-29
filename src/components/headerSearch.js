@@ -55,6 +55,7 @@ const HeaderSearch = () => {
             from: month,
             to: current
           })
+          console.log("this is data,", addingResponse.data)
   
           if(addingResponse.data.length == 0) {
             console.log("ticker not supported")

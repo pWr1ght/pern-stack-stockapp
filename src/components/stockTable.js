@@ -14,7 +14,7 @@ import {TableContext} from '../context/tableContext';
 import EnhancedTableHead from './tableHead'
 import EnhancedTableToolbar from './tableToolBar'
 import Container from '@material-ui/core/Container';
-import GetStocks from '../backendLink/getBackendURL'
+import URLlink from '../backendLink/getBackendURL'
 import {rearangeData} from '../sortDataFunctions/sortChartData';
 import ViewInfo from './rowChart';
 import StockArrow from './stockArrow';
@@ -24,7 +24,8 @@ import ReactHover from 'react-hover'
 import HoverSymbol from './hoverSymbol';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Grow from '@material-ui/core/Grow';
-import SearchHeader from './headerSearch'
+import SearchHeader from './headerSearch';
+import { v4 as uuidv4 } from 'uuid';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -99,10 +100,10 @@ const EnhancedTable = () => {
               const current = parseInt(now/1000)
               const month = current - (86400 * 31)
               const stockSymbols = rowStorage.map(item => item.symbol)
-              const totalStockInfoResponse = await GetStocks.get('/', {
+              const totalStockInfoResponse = await URLlink.get('/getStockInfo', {
                   params:{ list: stockSymbols, from: month, to: current}
               })
-
+              console.log("this is the totStock", totalStockInfoResponse.data)
               const totalModifiedStockData = totalStockInfoResponse.data[0]
                   .map(element => rearangeData(element))
               let formattedRows = totalModifiedStockData.map(row => {
@@ -250,7 +251,8 @@ const EnhancedTable = () => {
                       const labelId = `enhanced-table-checkbox-${index}`;
                       return (
                         <Grow
-                        in={rows}
+                        // key={uuidv4()}
+                        in={true}
                         style={{ transformOrigin: '0 0 0' }}
                         {...(rows ? { timeout: 1000 } : [])}
                         > 
@@ -260,17 +262,17 @@ const EnhancedTable = () => {
                           role="checkbox"
                           aria-checked={isItemSelected}
                           tabIndex={-1}
-                          key={row.symbol}
+                          key={uuidv4()}
                           selected={isItemSelected}
                         >
                         
-                          <TableCell padding="checkbox">
+                          <TableCell  key={uuidv4()} padding="checkbox">
                             <Checkbox
                               checked={isItemSelected}
                               inputProps={{ 'aria-labelledby': labelId }}
                             />
                           </TableCell>
-                          <TableCell component="th" id={labelId} scope="row" padding="none">
+                          <TableCell  key={uuidv4()} component="th" id={labelId} scope="row" padding="none">
                               <div style={{display:"flex"}}>
                                 <ReactHover
                                     options={optionsCursorTrueWithMargin}>
@@ -283,11 +285,12 @@ const EnhancedTable = () => {
                                 </ReactHover>
                               </div>
                           </TableCell>
-                          <TableCell align="right"><StockArrow break={true} dollarChange={row.financialData.regularMarketChange} percentageChange={row.financialData.regularMarketChangePercent}/></TableCell>
-                          <TableCell align="right">{abbreviateNumber(row.marketCap)}</TableCell>
-                          <TableCell align="right">{row.sharePrice}</TableCell>
-                          <TableCell className="expand-trigger" align="right">
+                          <TableCell  key={uuidv4()} align="right"><StockArrow break={true} dollarChange={row.financialData.regularMarketChange} percentageChange={row.financialData.regularMarketChangePercent}/></TableCell>
+                          <TableCell  key={uuidv4()} align="right">{abbreviateNumber(row.marketCap)}</TableCell>
+                          <TableCell  key={uuidv4()} align="right">{row.sharePrice}</TableCell>
+                          <TableCell  key={uuidv4()} className="expand-trigger" align="right">
                             <ViewInfo
+                              key={uuidv4()}
                               row={row} 
                               data={row.chart}
                               id={row.chart.stockId}
@@ -303,7 +306,7 @@ const EnhancedTable = () => {
                     })
                 }
                 {emptyRows > 0 && (
-                  <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
+                  <TableRow key={uuidv4()}style={{ height: (dense ? 33 : 53) * emptyRows }}>
                     <TableCell colSpan={6} />
                   </TableRow>
                 )}
@@ -311,6 +314,7 @@ const EnhancedTable = () => {
             </Table>
           </TableContainer>
           <TablePagination
+            key={uuidv4()}
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
             count={rows.length}

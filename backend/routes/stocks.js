@@ -59,7 +59,7 @@ router.route("/singlestock/reccomendation").get( async (req, res) => {
     }
 })
 
-router.route("/").get( async (req, res) => {
+router.route("/getStockInfo").get( async (req, res) => {
     try {
         let {list, to, from} = req.query
 
@@ -128,13 +128,13 @@ router.route("/").post( async (req, res) => {
         if(candleStockChartResponse.data.s == 'ok') {
         console.log("no error--------")
         // console.log("candleStock error", candleStockChartResponse.data)
-        const postStock =  await pool.query('INSERT INTO stock (user_id, ticker) VALUES (2, $1) RETURNING *',[ticker]);
+        // const postStock =  await pool.query('INSERT INTO stock (user_id, ticker) VALUES (2, $1) RETURNING *',[ticker]);
         const finCurrentPriceData = await getYahooData.getSingleStockInfo(ticker)
-        let stockId = postStock.rows[0].stock_id
+        // let stockId = postStock.rows[0].stock_id
         let name = finCurrentPriceData.displayName.split(" ")[0]
         const pictureData = await axios.get(`https://autocomplete.clearbit.com/v1/companies/suggest?query=${name}`)
         candleStockChartResponse.data.symbol=ticker
-        candleStockChartResponse.data.stockId = stockId
+        candleStockChartResponse.data.stockId = 2
         candleStockChartResponse.data.dataSummary = finCurrentPriceData
         candleStockChartResponse.data.imageInfo = pictureData.data[0]
 

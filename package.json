@@ -24,7 +24,8 @@
     "react-hover": "^1.4.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
-    "unirest": "^0.6.0"
+    "unirest": "^0.6.0",
+    "uuid": "^8.3.0"
   },
   "scripts": {
     "start": "react-scripts start",

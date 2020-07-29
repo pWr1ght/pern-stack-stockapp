@@ -41,11 +41,11 @@ const EnhancedTableToolbar = (props) => {
             !selected.includes(row.symbol)
         )
 
-        const deleteRowArray = props.rows.filter(row => {
-            if(selected.includes(row.symbol)) {
-                return row;
-            }
-        }).map(({chart}) => chart.stockId)
+        // const deleteRowArray = props.rows.filter(row => {
+        //     if(selected.includes(row.symbol)) {
+        //         return row;
+        //     }
+        // }).map(({chart}) => chart.stockId)
         
         setRows(stayRowArray);
         // console.log("this is leftOver", stayRowArray)
