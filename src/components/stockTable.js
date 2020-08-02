@@ -92,6 +92,9 @@ const EnhancedTable = () => {
     }
 
     useEffect( () => {
+      // if(localStorage.getItem('StockRows')) {
+      // } else {
+      // localStorage.setItem('StockRows', [])}
       let rowStorage = JSON.parse(localStorage.getItem('StockRows'))
       const fetchData = async () => {
           try{

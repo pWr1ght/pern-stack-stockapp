@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const pool = require('../db.js');
+// const pool = require('../db.js');
 const { route } = require('express/lib/router');
 const axios = require('axios');
 const { lookup, history } = require('yahoo-stocks');
@@ -7,7 +7,7 @@ const { lookup, history } = require('yahoo-stocks');
 // const FinnhubAPI = require('@stoqey/finnhub');
 var parser = require('xml2json');
 const finnhub = require('finnhub');
-const dataOrganize = require('../../src/sortDataFunctions/yFinFormat')
+// const dataOrganize = require('../../src/sortDataFunctions/yFinFormat')
 const getYahooData = require('stock-info');
 const api_key = finnhub.ApiClient.instance.authentications['api_key'];
 api_key.apiKey = process.env.APIKEY_FINHUB// Replace this
@@ -148,15 +148,15 @@ router.route("/").post( async (req, res) => {
     }
 })
 
-router.route("/:id").delete(async (req, res) => {
-    const id = req.params.id
-    try {
-        const deleteStock = await pool.query('DELETE FROM stock WHERE stock_id = $1', [id]);
-        res.json(deleteStock);
-    } catch {
-        console.log(error)
-    }
-})
+// router.route("/:id").delete(async (req, res) => {
+//     const id = req.params.id
+//     try {
+//         const deleteStock = await pool.query('DELETE FROM stock WHERE stock_id = $1', [id]);
+//         res.json(deleteStock);
+//     } catch {
+//         console.log(error)
+//     }
+// })
 
 module.exports = router;
 
