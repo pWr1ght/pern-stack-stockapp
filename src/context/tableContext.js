@@ -14,6 +14,7 @@ export const TableContextProvider = props => {
             return JSON.parse(localStorage.getItem('StockRows'))
         }
     }
+    const [chartSwitch, setChartSwitch] = useState('Spark Chart')
     const [rows, setRows] = useState(checkRows())
    useEffect(() => {
        localStorage.setItem('StockRows', JSON.stringify(rows))
@@ -23,7 +24,7 @@ export const TableContextProvider = props => {
 //    }, [])
 
    return (
-       <TableContext.Provider value={{rows, setRows}}>
+       <TableContext.Provider value={{rows, setRows, chartSwitch, setChartSwitch}}>
            {props.children}
        </TableContext.Provider>
    )

@@ -5,10 +5,12 @@ import ButtonGroup from '@material-ui/core/ButtonGroup';
 import {rearangeData} from '../sortDataFunctions/sortChartData';
 import {TableContext} from '../context/tableContext';
 import backendURL from '../backendLink/getBackendURL';
+import '../styles/style.css'
+import SparkLineGraph from './sparkLineGraph'
 
 
 const HeaderSearch = () => {
-    const {rows, setRows} = useContext(TableContext);
+    const {rows, setRows, chartSwitch, setChartSwitch} = useContext(TableContext);
     const [currentTicker, setCurrentTicker] = useState('');
     const [symbolError, setSymbolError] = useState(false);
 
@@ -87,39 +89,48 @@ const HeaderSearch = () => {
         setCurrentTicker('');
       }
     return (
+      <div>
+
         <div className="header">
-            <Container className="header" maxWidth="sm" className="text-center">
+            {/* <Container maxWidth="sm" > */}
+              
+              <div className="headerbackDrop" style={{ textAlign: "center"}}>
               <h1 >Welcome to your stock portfolio</h1>
                   {/* input */}
-                  <form onSubmit={onSubmitForm} noValidate autoComplete="off">
-                      <div className="searchTool">
-                        {!symbolError ? (
-                          <TextField id="standard-basic"
-                            label="Please Enter your stock ticker"
-                            text="text" className="form-control"
-                            value={currentTicker} 
-                            onChange={e => setCurrentTicker(e.target.value)}/>
-                          ) : (
-                            <TextField
-                            error
-                            className="form-control"
-                            id="standard-error-helper-text"
-                            label="Ticker not supported"
-                            value={currentTicker} 
-                            onChange={e => setCurrentTicker(e.target.value)}
-                          />
-                          ) 
-                        }
-                          <ButtonGroup
-                              color="primary"
-                              aria-label="contained primary button group"
-                              variant="contained"
-                          >
-                          <Button color="primary" type="submit">Add</Button>
-                          </ButtonGroup>
-                      </div>
-                  </form>
+                </div>
+            {/* </Container> */}
+            <Container maxWidth="sm" className="text-center">
+              <form onSubmit={onSubmitForm} noValidate autoComplete="off">
+                <div className="searchTool">
+                  {!symbolError ? (
+                    <TextField id="standard-basic"
+                      label="Please Enter your stock ticker"
+                      text="text" className="form-control"
+                      value={currentTicker} 
+                      onChange={e => setCurrentTicker(e.target.value)}/>
+                    ) : (
+                      <TextField
+                      error
+                      className="form-control"
+                      id="standard-error-helper-text"
+                      label="Ticker not supported"
+                      value={currentTicker} 
+                      onChange={e => setCurrentTicker(e.target.value)}
+                    />
+                    ) 
+                  }
+                    <ButtonGroup
+                        color="primary"
+                        aria-label="contained primary button group"
+                        variant="contained"
+                    >
+                    <Button color="primary" type="submit">Add</Button>
+                    </ButtonGroup>
+                </div>
+              </form>
             </Container>
+        </div>
+
         </div>
     )
 }

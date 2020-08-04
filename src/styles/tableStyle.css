@@ -1,19 +1,26 @@
 .expand-trigger {
-    width: 450px;
-    height: 142px;
+    width: 0px;
+    height: 0px;
 }
 .MuiToolbar-gutters.makeStyles-root-5.MuiToolbar-regular.MuiToolbar-root {
     background-color: #022B3C;
     color: white;
+    z-index: "-2222"
 }
 .MuiToolbar-root{
     background-color:#022B3C;
     color: white;
 }
 
-.MuiToolbar-gutters.MuiTablePagination-toolbar.MuiToolbar-regular.MuiToolbar-root {
-    border: 1px solid #022B3C;
+.MuiToolbar-root {
+    
 }
+.MuiToolbar-gutters.MuiTablePagination-toolbar.MuiToolbar-regular.MuiToolbar-root {
+   
+    /* z-index: -2222 */
+    
+}
+
 
 .tableFormControl{
     color: white
@@ -28,7 +35,11 @@
     background: lightblue;
 }
 
-
+.MuiTablePagination-root {
+border: 1px solid #022B3C;
+background-color: #022B3C;
+color: white;
+}
 
                         
 /* .searchHeader.h1 {

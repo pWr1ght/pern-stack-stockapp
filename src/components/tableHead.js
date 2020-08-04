@@ -5,26 +5,36 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-
-
-const headCells = [
-  { id: 'symbol', direction: 'left', disablePadding: false, label: 'Stock Ticker' },
-  { id: 'stockChange', direction: 'right', disablePadding: false, label: 'Day Change' },
-  { id: 'marketCap', direction: 'right', disablePadding: false, label: 'marketCap (USD) ' },
-  { id: 'sharePrice', direction: 'right', disablePadding: false, label: 'Share Price (USD)' },
-  { id: 'chart', direction: 'center', disablePadding: true, label: 'Chart' },
-];
+import {TableContext} from '../context/tableContext'
+import IconButton from '@material-ui/core/IconButton';
 
 function EnhancedTableHead(props) {
+  const {rows, setRows, chartSwitch, setChartSwitch} = useContext(TableContext)
     // number of selected  
     const { classes, onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } = props;
     const createSortHandler = (property) => (event) => {
         onRequestSort(event, property);
     };
-
+  
+    const headCells = [
+      { id: 'symbol', direction: 'left', disablePadding: false, label: 'Stock Ticker',  sort: true},
+      { id: 'stockChange', direction: 'right', disablePadding: false, label: 'Day Change', sort: true },
+      { id: 'marketCap', direction: 'right', disablePadding: false, label: 'marketCap (USD) ', sort: true},
+      { id: 'sharePrice', direction: 'right', disablePadding: false, label: 'Share Price (USD)',sort: true},
+      { id: 'chart', direction: 'center', disablePadding: true, label: `${chartSwitch}`, sort: false },
+      { id: 'link', direction: 'center', disablePadding: true, label: 'Info', sort: false}
+    ];
+  
+  const onChangeChart = () => {
+    if(chartSwitch == 'Spark Chart') {
+      setChartSwitch('OHLC Chart')
+    } else {
+      setChartSwitch('Spark Chart')
+    }
+  }
 
   return (
-    <TableHead>
+    <TableHead style={{marginTop: '30px'}}>
       <TableRow>
         <TableCell padding="checkbox">
           <Checkbox
@@ -41,7 +51,7 @@ function EnhancedTableHead(props) {
             padding={headCell.disablePadding ? 'none' : 'default'}
             sortDirection={orderBy === headCell.id ? order : false}
           >
-            { headCell.id !== 'chart' ? (
+            { headCell.sort ? (
                 <TableSortLabel
                     active={orderBy === headCell.id}
                     direction={orderBy === headCell.id ? order : 'asc'}
@@ -54,7 +64,10 @@ function EnhancedTableHead(props) {
                     </span>
                     ) : null}
                 </TableSortLabel>
-                ) : headCell.label
+                ) : headCell.id !== 'link' ? (<a onClick={onChangeChart}><IconButton color="primary" component="span">
+                <i className="far fa-chart-bar"></i> 
+              </IconButton> {headCell.label}</a>) : (
+              <div>{headCell.label}</div>)
             }
           </TableCell>
         ))}

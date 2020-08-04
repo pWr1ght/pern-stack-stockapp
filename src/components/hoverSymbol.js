@@ -27,7 +27,7 @@ const HoverSymbol = (props) => {
           image={props.image.logo}
           title="Contemplative Reptile"
         />
-        <CardContent>
+        <CardContent style={{zIndex: "1000"}}>
           <Typography gutterBottom variant="h5" component="h2">
             {props.image.name}
           </Typography>

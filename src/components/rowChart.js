@@ -3,9 +3,11 @@ import Chart from 'react-apexcharts'
 import {CurrentStockContext} from '../context/currentStockContext';
 import { useHistory } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
-
+import SparkLineGraph from './sparkLineGraph'
+import {TableContext} from '../context/tableContext'
 const Charting = (props) => {
     const {currentStockInfo, setCurrentStockInfo} = useContext(CurrentStockContext)
+    const {rows, setRows, chartSwitch, setChartSwitch} = useContext(TableContext)
     let history = useHistory()
     
     const viewStock = async (id, name, row) => {
@@ -18,12 +20,22 @@ const Charting = (props) => {
         abbreviatedMarketCap: props.abbreviatedMarketCap
     })
     }
-    
+     const colorIndicator = () => {
+        if (props.row.stockChange >= 0) {
+            return 'green';
+        } else {
+            return 'red';
+        }
+    }
 return (
 
     <div style={{display: "flex", alignItems: "center", padding: "0", margin: "10"}}>
-        <Chart options={props.data.options} series={props.data.series} type="candlestick" height={125} width={300} />
-        <Button size="medium" onClick={()=> viewStock(props.id, props.name, props.row)}>View More Info</Button>
+        {chartSwitch == 'Spark Chart' ? (<SparkLineGraph data={props.row} color={colorIndicator()}/>) :
+         <Chart options={props.data.options} series={props.data.series} type="candlestick" height={100} width={300} /> 
+        }
+          
+        {/* <Chart options={props.data.options} series={props.data.series} type="candlestick" height={100} width={300} /> */}
+        {/* <Button size="medium" onClick={()=> viewStock(props.id, props.name, props.row)}> More Info</Button> */}
     </div>
     )
 }

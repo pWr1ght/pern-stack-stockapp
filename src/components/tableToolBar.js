@@ -14,6 +14,7 @@ const useToolbarStyles = makeStyles((theme) => ({
     root: {
         paddingLeft: theme.spacing(2),
         paddingRight: theme.spacing(1),
+        zIndex: "-2222"
     },
     highlight:
         theme.palette.type === 'light'
@@ -54,7 +55,7 @@ const EnhancedTableToolbar = (props) => {
     }
 
     return (
-        <Toolbar
+        <Toolbar style={{marginTop: '60px'}}
         // className={clsx(classes.root, {
         //     [classes.highlight]: numSelected > 0,
         // })}

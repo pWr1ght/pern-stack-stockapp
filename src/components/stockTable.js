@@ -26,11 +26,14 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import Grow from '@material-ui/core/Grow';
 import SearchHeader from './headerSearch';
 import { v4 as uuidv4 } from 'uuid';
+import Button from '@material-ui/core/Button'
+import ViewMoreInfo from './viewMoreInfo';
 
 const useStyles = makeStyles((theme) => ({
     root: {
       width: '100%',
-      background: '#0C6BA7'
+      background: '#0C6BA7',
+      paddingBottom: "100px"
     },
     paper: {
       width: '100%',
@@ -38,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
     },
     table: {
       minWidth: 750,
-      border: "2px solid #0C6BA7"
+      border: "2px solid #0C6BA7",
     },
     visuallyHidden: {
       border: 0,
@@ -275,15 +278,15 @@ const EnhancedTable = () => {
                               inputProps={{ 'aria-labelledby': labelId }}
                             />
                           </TableCell>
-                          <TableCell  key={uuidv4()} component="th" id={labelId} scope="row" padding="none">
-                              <div style={{display:"flex"}}>
+                          <TableCell align="center" key={uuidv4()} component="th" id={labelId} scope="row" padding="none">
+                              <div style={{display:"flex", flexDirection:"column"}}>
                                 <ReactHover
                                     options={optionsCursorTrueWithMargin}>
                                     <ReactHover.Trigger type='trigger'>
-                                      <div><h2>{row.symbol}</h2></div>
+                                      <div><h3>{row.symbol}</h3></div>
                                     </ReactHover.Trigger>
                                     <ReactHover.Hover type='hover'>
-                                      <HoverSymbol image={row.imageInfo}/>
+                                      <HoverSymbol style={{zIndex: 1000}} image={row.imageInfo}/>
                                     </ReactHover.Hover>
                                 </ReactHover>
                               </div>
@@ -303,6 +306,18 @@ const EnhancedTable = () => {
                             >
                             </ViewInfo>
                           </TableCell>
+                          <TableCell key={uuidv4()} className="expand-trigger" align="right">
+                            <ViewMoreInfo 
+                            key={uuidv4()}
+                            row={row} 
+                            data={row.chart}
+                            id={row.chart.stockId}
+                            name={row.symbol}
+                            abbreviatedMarketCap = {abbreviateNumber(row.marketCap)}
+                            financialData={row.financialData}>
+
+                            </ViewMoreInfo>
+                          </TableCell>
                         </TableRow>
                         </Grow>
                       );
@@ -310,12 +325,13 @@ const EnhancedTable = () => {
                 }
                 {emptyRows > 0 && (
                   <TableRow key={uuidv4()}style={{ height: (dense ? 33 : 53) * emptyRows }}>
-                    <TableCell colSpan={6} />
+                    <TableCell colSpan={7} />
                   </TableRow>
                 )}
               </TableBody>
             </Table>
           </TableContainer>
+          <div>
           <TablePagination
             key={uuidv4()}
             rowsPerPageOptions={[5, 10, 25]}
@@ -326,6 +342,7 @@ const EnhancedTable = () => {
             onChangePage={handleChangePage}
             onChangeRowsPerPage={handleChangeRowsPerPage}
           />
+          </div>
           </Paper>
         </Container>
         <Container className="tableFormControl">
