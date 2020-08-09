@@ -10,7 +10,7 @@ import SparkLineGraph from './sparkLineGraph'
 
 
 const HeaderSearch = () => {
-    const {rows, setRows, chartSwitch, setChartSwitch} = useContext(TableContext);
+    const {rows, setRows} = useContext(TableContext);
     const [currentTicker, setCurrentTicker] = useState('');
     const [symbolError, setSymbolError] = useState(false);
 
