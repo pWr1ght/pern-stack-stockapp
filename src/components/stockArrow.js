@@ -6,7 +6,6 @@ const StockArrow = (props) => {
     const [ directionUp, setDirectionUp] = useState(true);
 
     useEffect(() => {
-        console.log("this is dollarChange", props.dollarChange)
         if(props.dollarChange > 0) {
             setColorChange('green');
             setPositive('+');

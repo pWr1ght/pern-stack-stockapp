@@ -12,11 +12,14 @@
 .header {
     /* padding-top: 50px; */
     color: white;
-    background-image: url('../pictures/stock_exchange.jpg');
+    background-image: url('../pictures/wave.gif');
     /* padding-bottom: 30px; */
+    background-size:     cover;                      /* <------ */
+    background-repeat:   no-repeat;
+    background-position: center center; 
     z-index: 0;
     margin-bottom: 20px;
-    padding:20px
+    padding:40px
     /* position: absolute; */
 }
 

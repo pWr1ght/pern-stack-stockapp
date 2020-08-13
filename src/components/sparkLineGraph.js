@@ -7,7 +7,7 @@ function SparkLineGraph(props) {
     const getYAxisData = () => {
         let seriesData = props.data.chart.series[0].data
         const chartYAxisArray = seriesData.map(YAxis => YAxis.y).map(close => close[3])
-        console.log(chartYAxisArray)
+        // console.log(chartYAxisArray)
         return chartYAxisArray;
     }
     
