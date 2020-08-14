@@ -12,6 +12,7 @@
     "axios": "^0.19.2",
     "bootstrap": "^4.5.0",
     "chart.js": "^2.9.3",
+    "fincal": "^1.0.6",
     "finnhub": "^1.1.6",
     "highcharts": "^8.1.2",
     "highcharts-react-official": "^3.0.0",

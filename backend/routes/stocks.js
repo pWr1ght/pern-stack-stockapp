@@ -14,6 +14,8 @@ const api_key = finnhub.ApiClient.instance.authentications['api_key'];
 api_key.apiKey = process.env.APIKEY_FINHUB// Replace this
 const cc = require('cryptocompare')
 cc.setApiKey('e1c95fb631253a9d74c36ede3dc3727850f583b8ed2e6ef50eb604ad43c6852a')
+var fincal = require("fincal");
+
 
 router.route("/getCrypto").get( async (req, res) => {
     cc.priceFull(['ADA', 'BAND', 'BTC', 'BCH', 'DASH', 'EOS', 'ETC', 'ETH', 'LINK', 'LTC', 'NEO', 'ONT', 'TRX', 'USDT', 'XMR', 'XRP', 'XTZ'], ['USD'])
@@ -22,6 +24,16 @@ router.route("/getCrypto").get( async (req, res) => {
         })
         .catch(console.error)
 })
+
+router.route("/checkMarketStatus").get(async (req, res) => {
+    let threeHrs = 10800000;
+    let calendar = fincal.calendar("new_york");
+    let currentDate = new Date().getTime();
+    let marketTime = new Date(currentDate);
+    let decision = calendar.areMarketsOpenAt(marketTime);
+    res.json(decision);
+})
+
 
 router.route("/singlestock/:id/:name").get( async (req, res) => {
     let {id,name} = req.params

@@ -8,17 +8,30 @@ import backendURL from '../backendLink/getBackendURL';
 import '../styles/style.css'
 import SparkLineGraph from './sparkLineGraph'
 
-
 const HeaderSearch = () => {
     const {rows, setRows} = useContext(TableContext);
     const [currentTicker, setCurrentTicker] = useState('');
     const [symbolError, setSymbolError] = useState(false);
+    const [marketStatus, setMarketStatus] = useState(false);
+  
 
     // the function that grabs the rows
     function createData(symbol, stockChange, marketCap, sharePrice, chart, financialData, imageInfo, stockId, abMarketCap) {
-        return { symbol, stockChange, marketCap, sharePrice, chart, financialData, imageInfo, stockId, abMarketCap};
+      return { symbol, stockChange, marketCap, sharePrice, chart, financialData, imageInfo, stockId, abMarketCap};
     }
 
+    useEffect(() => {
+      const getStatus = async () => {
+        const marketStatusReponse = await backendURL.get('/checkMarketStatus');
+        const marketStatusDesicion = marketStatusReponse.data 
+        if(marketStatusDesicion) {
+            setMarketStatus(true)
+          } else {
+            setMarketStatus(false)
+          }
+      }
+      getStatus();
+    }, [])
     function abbreviateNumber(value) {
         let newValue = value;
         if (value >= 1000) {
@@ -93,8 +106,8 @@ const HeaderSearch = () => {
 
         <div className="header">
             {/* <Container maxWidth="sm" > */}
-              
-              <div className="headerbackDrop" style={{ textAlign: "center"}}>
+            {/* "headerbackDrop" */}
+              <div className="" style={{ textAlign: "center"}}>
               <h1 >Welcome to your stock portfolio</h1>
                   {/* input */}
                 </div>
@@ -130,8 +143,10 @@ const HeaderSearch = () => {
               </form>
             </Container>
         </div>
-
+        <div className="spacerBarFlexEnd">
+          {marketStatus ? <div><h4 style={{color: 'green', marginTop: "-10px", marginBottom: "-20px", lineHeight: "1.6"}}>Market Open</h4></div> : <div style={{color: 'red', marginRight: "20px", marginBottom: "-20px"}}><h4 style={{lineHeight: "1.6"}}>Market Closed</h4></div>}
         </div>
+      </div>
     )
 }
 

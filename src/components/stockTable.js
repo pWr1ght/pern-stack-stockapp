@@ -32,7 +32,14 @@ import ViewMoreInfo from './viewMoreInfo';
 const useStyles = makeStyles((theme) => ({
     root: {
       width: '100%',
-      background: '#0C6BA7',
+      // rgb(28,61,69)
+      // #0C6BA7
+      backgroundAttachment: "fixed",
+      backgroundPosition: "center",
+      backgroundImage: "radial-gradient(circle, #211f1f, #292626, #302d2f, #373437, #3d3c40, #414249, #444953, #45505c, #415869, #3a6074, #2d697e, #147287)",
+      // backgroundImage: "linear-gradient(to top, #211f1f, #292626, #302d2f, #373437, #3d3c40, #414249, #444953, #45505c, #415869, #3a6074, #2d697e, #147287)",
+      // backgroundImage: "linear-gradient(to right top, #0095b7, #4d6f97, #574d68, #43333c, #211f1f)",
+      // backgroundImage: "linear-gradient(to bottom, #147287, #3b5774, #453f54, #392d34, #211f1f)",
       paddingBottom: "100px"
     },
     paper: {
