@@ -32,6 +32,7 @@ const HeaderSearch = () => {
       }
       getStatus();
     }, [])
+
     function abbreviateNumber(value) {
         let newValue = value;
         if (value >= 1000) {
@@ -70,7 +71,6 @@ const HeaderSearch = () => {
             from: month,
             to: current
           })
-          console.log("this is data,", addingResponse.data)
   
           if(addingResponse.data.length == 0) {
             console.log("ticker not supported")
@@ -143,9 +143,9 @@ const HeaderSearch = () => {
               </form>
             </Container>
         </div>
-        <div className="spacerBarFlexEnd">
+        {/* <div className="spacerBarFlexEnd">
           {marketStatus ? <div style={{lineHeight: "1.6"}}><h4 style={{color: 'green', marginTop: "-10px", marginBottom: "-20px", lineHeight: "1.6"}}>Market Open</h4></div> : <div style={{color: 'red', marginRight: "20px", marginBottom: "-20px"}}><h4 style={{lineHeight: "1.6"}}>Market Closed</h4></div>}
-        </div>
+        </div> */}
       </div>
     )
 }

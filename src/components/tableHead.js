@@ -10,12 +10,12 @@ import IconButton from '@material-ui/core/IconButton';
 
 function EnhancedTableHead(props) {
   const {rows, setRows, chartSwitch, setChartSwitch} = useContext(TableContext)
-    // number of selected  
+    // number of index selected 
     const { classes, onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } = props;
     const createSortHandler = (property) => (event) => {
         onRequestSort(event, property);
     };
-  
+    
     const headCells = [
       { id: 'symbol', direction: 'left', disablePadding: false, label: 'Stock Ticker',  sort: true},
       { id: 'stockChange', direction: 'right', disablePadding: false, label: 'Day Change', sort: true },
@@ -34,7 +34,7 @@ function EnhancedTableHead(props) {
   }
 
   return (
-    <TableHead style={{marginTop: '30px'}}>
+    <TableHead>
       <TableRow>
         <TableCell padding="checkbox">
           <Checkbox

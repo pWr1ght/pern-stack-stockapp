@@ -29,6 +29,9 @@ const useToolbarStyles = makeStyles((theme) => ({
     title: {
         flex: '1 1 100%',
     },
+    button: {
+        color: "white"
+    }
     }));
 
 const EnhancedTableToolbar = (props) => {
@@ -41,21 +44,13 @@ const EnhancedTableToolbar = (props) => {
         const stayRowArray = props.rows.filter(row => 
             !selected.includes(row.symbol)
         )
-
-        // const deleteRowArray = props.rows.filter(row => {
-        //     if(selected.includes(row.symbol)) {
-        //         return row;
-        //     }
-        // }).map(({chart}) => chart.stockId)
-        
         setRows(stayRowArray);
-        // console.log("this is leftOver", stayRowArray)
-        // console.log(selected)
         setSelected([])
     }
 
     return (
-        <Toolbar style={{marginTop: '60px'}}
+        <Toolbar 
+        // style={{marginTop: '60px'}}
         // className={clsx(classes.root, {
         //     [classes.highlight]: numSelected > 0,
         // })}
@@ -72,13 +67,13 @@ const EnhancedTableToolbar = (props) => {
         {/* button for Deleting   */}
         {numSelected > 0 ? (
             <Tooltip title="Delete">
-            <IconButton style={{color: "white"}} onClick={deleteRow} aria-label="delete">
-                <DeleteIcon />
-            </IconButton>
+                <IconButton className={classes.button} onClick={deleteRow} aria-label="delete">
+                    <DeleteIcon />
+                </IconButton>
             </Tooltip>
         ) : (
             <Tooltip title="Filter list">
-            <IconButton style={{color: "white"}} aria-label="filter list">
+            <IconButton className={classes.button} aria-label="filter list">
                 <FilterListIcon />
             </IconButton>
             </Tooltip>
