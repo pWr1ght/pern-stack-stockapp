@@ -9,8 +9,8 @@ export const CryptoContextProvider = props => {
     const checkCurrentCrypto = () => {
         console.log("this is rig", localStorage.getItem('currentCryptoName'))
         if(((localStorage.getItem('currentCryptoName') === null))) {
-            localStorage.setItem('currentCryptoName', JSON.stringify(['BTC', 'ETH', 'USDT', 'DASH']))
-            return ['BTC', 'ETH', 'USDT', 'DASH']
+            localStorage.setItem('currentCryptoName', JSON.stringify(['BTC', 'ETH', 'USDT', 'DASH', 'XRP', 'ADA']))
+            return ['BTC', 'ETH', 'USDT', 'DASH', 'XRP', 'ADA']
         } else {
             return JSON.parse(localStorage.getItem('currentCryptoName')); 
         }

@@ -41,7 +41,7 @@ const TransitionsModal = () => {
 
   return (
     <div>
-      <Button onClick={handleOpen}>
+      <Button style={{color: "white"}} variant="outlined" onClick={handleOpen}>
         Edit CryptoBar
       </Button>
       <Modal
@@ -59,7 +59,7 @@ const TransitionsModal = () => {
         <Fade in={openModal}>
           <div className={classes.paper}>
             <Card style={{padding: "30px"}}>
-              <h2 id="transition-modal-title">Change your Cryptocurrencies (limit</h2>
+              <h2 id="transition-modal-title">Change your Cryptocurrencies (Limit 6)</h2>
               <CryptoModuleOptions/>
             </Card>
           </div>

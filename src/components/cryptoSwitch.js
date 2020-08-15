@@ -138,7 +138,7 @@ const ModalOptions = () => {
     const addCrypto = (name) => {
         if(!currentCrypto.includes(cryptoName) 
             && !(cryptoName == '') 
-            && currentCrypto.length <= 7) {
+            && currentCrypto.length <= 5) {
                 setDelete(false)
                 setAdd(true)
                 console.log(currentCrypto)

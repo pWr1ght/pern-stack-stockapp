@@ -8,6 +8,7 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid'
 import '../styles/cryptoStyle.css'
 import { wrap } from 'highcharts';
+import StockArrow from './stockArrow';
 
 // const GetRatesFromAPI = (props) => {
    
@@ -54,100 +55,14 @@ import { wrap } from 'highcharts';
       }
     return (
       <div>
-        <div className="flexBoxContainer" style={{flexWrap: "no-wrap", background: "rgb(34,34,34)"}}>
-          {/* <div className="flexbox-item2 flexbox-item">
-            <div className="tickerBox tickerFont" style={{textAlign: "center"}}>
-              <div>BTC - Price: 14539</div>
-              <div>164.34 ^ (1.36)</div>
-            </div>
-          </div>
-          <div className="flexbox-item2 flexbox-item">
-            
-            <div className="tickerBox tickerFont" style={{textAlign: "center"}}>
-              <div>BTC - Price: 14539</div>
-              <div>164.34 ^ (1.36)</div>
-            </div>
-          </div>
-          <div style={{width: '2px', background: 'grey', margin: "5px", height: "70px"}}></div>
-          <div className="flexbox-item2 flexbox-item">
-            <div className="tickerBox" style={{textAlign: "center"}}>
-              <div>BTC - Price: 14539</div>
-              <div>164.34 ^ (1.36)</div>
-            </div>
-          </div>
-          <div style={{width: '2px', background: 'grey', margin: "5px", height: "70px"}}></div>
-          <div className="flexbox-item2 flexbox-item">
-            <div className="tickerBox" style={{textAlign: "center"}}>
-              <div>BTC - Price: 14539</div>
-              <div>164.34 ^ (1.36)</div>
-            </div>
-          </div>
-          <div style={{width: '2px', background: 'grey', margin: "5px", height: "70px"}}></div>
-          <div className="flexbox-item2 flexbox-item">
-            <div className="tickerBox" style={{textAlign: "center"}}>
-              <div>BTC - Price: 14539</div>
-              <div>164.34 ^ (1.36)</div>
-            </div>
-          </div>
-          <div style={{width: '2px', background: 'grey', margin: "5px", height: "70px"}}></div>
-          <div className="flexbox-item2 flexbox-item">
-            <div className="tickerBox tickerFont" style={{textAlign: "center"}}>
-              <div>BTC - Price: 14539</div>
-              <div>164.34 ^ (1.36)</div>
-            </div>
-          </div>
-          <div style={{width: '2px', background: 'grey', margin: "5px", height: "70px"}}></div>
-          <div className="flexbox-item2 flexbox-item">
-            <div className="tickerBox" style={{textAlign: "center"}}>
-              <div>BTC - Price: 14539</div>
-              <div>164.34 ^ (1.36)</div>
-            </div>
-          </div>
-          <div style={{width: '2px', background: 'grey', margin: "5px", height: "70px"}}></div>
-          <div className="flexbox-item2 flexbox-item">
-            <div className="tickerBox" style={{textAlign: "center"}}>
-              <div>BTC - Price: 14539</div>
-              <div>164.34 ^ (1.36)</div>
-            </div>
-          </div>
-          <div style={{width: '2px', background: 'grey', margin: "5px", height: "70px"}}></div>
-          <div className="flexbox-item2 flexbox-item">
-            <div className="tickerBox" style={{textAlign: "center"}}>
-              <div>BTC - Price: 14539</div>
-              <div>164.34 ^ (1.36)</div>
-            </div>
-          </div>
-          <div style={{width: '2px', background: 'grey', margin: "5px", height: "70px"}}></div>
-          
-          <div className="flexbox-item3 flexbox-item"></div> */}
-          {/* <Grid container spacing={3}>
-            <Grid item xs>
-              <Paper>xs</Paper>
-            </Grid>
-            <Grid item xs>
-              <Paper>xs</Paper>
-            </Grid>
-            <Grid item xs>
-              <Paper >xs</Paper>
-            </Grid>
-          </Grid> */}
-            {/* <div style={{background: "rgb(34,34,34)", color: "white", display: "flex",}}>
-              {cryptoStorage.map(crypto => 
-                <div style={{textAlign: "center",justifyContent: "center", display: "flex", marginLeft: "10px",marginTop: "10px"}}>
-                  {(`${crypto.FROMSYMBOL} Price: ${crypto.PRICE}`)}<div style={{display: "flex"}}>{fixingToFloat(crypto.CHANGEPCTDAY)}</div><div style={{width: '2px', background: 'grey', margin: "5px", height: "70px"}}>
-                  </div>
-                </div>)}
-                <div style={{display: "flex", justifyContent: "flex-end", color: "white"}}> 
-                  <CryptoOptions/>
-                </div>
-            </div> */}
-            
+        <div className="flexBoxContainer" style={{flexWrap: "no-wrap", background: "rgb(34,34,34)"}}>            
             <div style={{background: "rgb(34,34,34)", color: "white", display: "flex"}}>
               {cryptoStorage.map(crypto => 
                 <div className="flexbox-item2 flexbox-item">
                   <div className="tickerBox" style={{textAlign: "center"}}>
                     <div>{(`${crypto.FROMSYMBOL} Price: ${crypto.PRICE}`)}</div>
-                    <div>{fixingToFloat(crypto.CHANGEPCTDAY)}</div>
+                    {/* <div>{fixingToFloat(crypto.CHANGEPCTDAY)}</div> */}
+                    <StockArrow break={false} percentageChange={Number(crypto.CHANGEPCTDAY)} dollarChange={Number(crypto.CHANGEDAY)}/>
                   </div>
                 </div>)}
                 <div style={{display: "flex", justifyContent: "flex-end", color: "white"}}> 

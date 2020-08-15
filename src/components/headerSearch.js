@@ -108,7 +108,7 @@ const HeaderSearch = () => {
             {/* <Container maxWidth="sm" > */}
             {/* "headerbackDrop" */}
               <div className="" style={{ textAlign: "center"}}>
-              <h1 >Welcome to your stock portfolio</h1>
+              <h1 >Welcome to your Portfolio</h1>
                   {/* input */}
                 </div>
             {/* </Container> */}
@@ -117,7 +117,7 @@ const HeaderSearch = () => {
                 <div className="searchTool">
                   {!symbolError ? (
                     <TextField id="standard-basic"
-                      label="Please Enter your stock ticker"
+                      label="Please Enter your Stock Ticker (AAPL, BA, GE, AMZN)"
                       text="text" className="form-control"
                       value={currentTicker} 
                       onChange={e => setCurrentTicker(e.target.value)}/>
@@ -137,14 +137,14 @@ const HeaderSearch = () => {
                         aria-label="contained primary button group"
                         variant="contained"
                     >
-                    <Button color="primary" type="submit">Add</Button>
+                    <Button color="primary" style={{backgroundColor: "rgb(27,66,76)", padding: "12px"}} type="submit">Add</Button>
                     </ButtonGroup>
                 </div>
               </form>
             </Container>
         </div>
         <div className="spacerBarFlexEnd">
-          {marketStatus ? <div><h4 style={{color: 'green', marginTop: "-10px", marginBottom: "-20px", lineHeight: "1.6"}}>Market Open</h4></div> : <div style={{color: 'red', marginRight: "20px", marginBottom: "-20px"}}><h4 style={{lineHeight: "1.6"}}>Market Closed</h4></div>}
+          {marketStatus ? <div style={{lineHeight: "1.6"}}><h4 style={{color: 'green', marginTop: "-10px", marginBottom: "-20px", lineHeight: "1.6"}}>Market Open</h4></div> : <div style={{color: 'red', marginRight: "20px", marginBottom: "-20px"}}><h4 style={{lineHeight: "1.6"}}>Market Closed</h4></div>}
         </div>
       </div>
     )
