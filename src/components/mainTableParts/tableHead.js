@@ -5,7 +5,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import {TableContext} from '../context/tableContext'
+import {TableContext} from '../../context/tableContext'
 import IconButton from '@material-ui/core/IconButton';
 
 function EnhancedTableHead(props) {

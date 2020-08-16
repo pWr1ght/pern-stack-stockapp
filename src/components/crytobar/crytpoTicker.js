@@ -1,14 +1,15 @@
 import React, {useState, useEffect, useContext} from 'react'
 import Ticker from 'react-ticker'
-import URLlink from '../backendLink/getBackendURL'
+// import URLlink from '../backendLink/getBackendURL'
+import URLlink from '../../backendLink/getBackendURL'
 import CryptoCompare from 'react-crypto-compare';
-import {CryptoContext} from '../context/cryptoContext';
+import {CryptoContext} from '../../context/cryptoContext';
 import CryptoOptions from './cryptoButtons';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid'
-import '../styles/cryptoStyle.css'
+import '../../styles/cryptoStyle.css'
 import { wrap } from 'highcharts';
-import StockArrow from './stockArrow';
+import StockArrow from '../stockArrow';
 
 // const GetRatesFromAPI = (props) => {
    

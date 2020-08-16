@@ -3,9 +3,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
-import '../styles/cardStyle.css'
+import '../../styles/cardStyle.css'
 import Divider from '@material-ui/core/Divider';
-import StockPriceDisplay from './stockArrow'
+import StockPriceDisplay from '../stockArrow'
 
 const useStyles = makeStyles({
     root: {

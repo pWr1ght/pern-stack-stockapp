@@ -29,7 +29,7 @@
 
 import React, {Fragment, useState,Component, useEffect, useContext} from 'react'
 import Chart from 'react-apexcharts'
-import {CurrentStockContext} from '../context/currentStockContext';
+import {CurrentStockContext} from '../../context/currentStockContext';
 import { useHistory } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import SparkLineGraph from './sparkLineGraph'

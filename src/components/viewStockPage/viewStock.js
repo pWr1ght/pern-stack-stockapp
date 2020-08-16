@@ -1,7 +1,7 @@
 import React, {Fragment, useState, useEffect, useContext} from 'react';
 import {useParams, useHistory} from 'react-router-dom';
 import BigStockChart from './bigStockChart';
-import GetStocks from '../backendLink/getBackendURL'
+import GetStocks from '../../backendLink/getBackendURL'
 import Button from '@material-ui/core/Button';
 import { Container, Divider } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
@@ -12,7 +12,7 @@ import List from '@material-ui/core/List';
 import Box from '@material-ui/core/Box'
 import StackChart from './stackChart'
 import StockNewsListItem from './stockNewsListItem.js'
-import {CurrentStockContext} from '../context/currentStockContext';
+import {CurrentStockContext} from '../../context/currentStockContext';
 
 const useStyles = makeStyles((theme) => ({
   root: {

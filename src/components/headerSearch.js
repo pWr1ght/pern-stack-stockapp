@@ -6,7 +6,7 @@ import {rearangeData} from '../sortDataFunctions/sortChartData';
 import {TableContext} from '../context/tableContext';
 import backendURL from '../backendLink/getBackendURL';
 import '../styles/style.css'
-import SparkLineGraph from './sparkLineGraph'
+import SparkLineGraph from './tableComponents/sparkLineGraph'
 
 const HeaderSearch = () => {
     const {rows, setRows} = useContext(TableContext);

@@ -1,7 +1,7 @@
 import React from 'react'
-import StockTable from './stockTable'
+import StockTable from './mainTableParts/stockTable'
 import CryptoCompare from "react-crypto-compare";
-import CryptoTicker from './crytpoTicker'
+import CryptoTicker from './crytobar/crytpoTicker'
 import SearchHeader from './headerSearch';
 import '../styles/style.css'
 

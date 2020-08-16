@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import ViewStock from './components/viewStock'
+import ViewStock from './components/viewStockPage/viewStock'
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'; 
 import {TableContextProvider} from './context/tableContext';
 import {CurrentStockContextProvider} from './context/currentStockContext';

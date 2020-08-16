@@ -7,9 +7,9 @@ import MenuItem from '@material-ui/core/MenuItem';
 import MoreVertIcon from '@material-ui/icons/MoreVert'
 import Button from '@material-ui/core/Button'
 import Divider from '@material-ui/core/Divider';
-import {CryptoContext} from '../context/cryptoContext'
+import {CryptoContext} from '../../context/cryptoContext'
 import AddIcon from '@material-ui/icons/Add';
-import '../styles/style.css'
+import '../../styles/style.css'
 import Fab from '@material-ui/core/Fab';
 import Paper from '@material-ui/core/Paper';
 import clsx from 'clsx';

@@ -1,10 +1,10 @@
 import React, {Fragment, useState,Component, useEffect, useContext} from 'react'
 import Chart from 'react-apexcharts'
-import {CurrentStockContext} from '../context/currentStockContext';
+import {CurrentStockContext} from '../../context/currentStockContext';
 import { useHistory } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import SparkLineGraph from './sparkLineGraph'
-import {TableContext} from '../context/tableContext'
+import {TableContext} from '../../context/tableContext'
 const Charting = (props) => {
     const {currentStockInfo, setCurrentStockInfo} = useContext(CurrentStockContext)
     const {rows, setRows, chartSwitch, setChartSwitch} = useContext(TableContext)

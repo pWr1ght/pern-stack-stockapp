@@ -1,6 +1,6 @@
 import ReactApexChart from 'react-apexcharts'
 import React, { useState,useEffect } from 'react'
-import GetStocks from '../backendLink/getBackendURL'
+import GetStocks from '../../backendLink/getBackendURL'
 
 const StackChart = (props) => {
     const [seriesData, setSeries] = useState([0])
