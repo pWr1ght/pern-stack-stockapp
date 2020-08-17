@@ -7,7 +7,6 @@ export const CryptoContext = createContext();
 export const CryptoContextProvider = props => {
 
     const checkCurrentCrypto = () => {
-        console.log("this is rig", localStorage.getItem('currentCryptoName'))
         if(((localStorage.getItem('currentCryptoName') === null))) {
             localStorage.setItem('currentCryptoName', JSON.stringify(['BTC', 'ETH', 'USDT', 'DASH', 'XRP', 'ADA']))
             return ['BTC', 'ETH', 'USDT', 'DASH', 'XRP', 'ADA']
@@ -15,7 +14,7 @@ export const CryptoContextProvider = props => {
             return JSON.parse(localStorage.getItem('currentCryptoName')); 
         }
     }
-    // ['BTC', 'ETH', 'USDT', 'DASH']
+
     const [currentCrypto, setCryto] = useState(checkCurrentCrypto())
     //     const stickyValue = localStorage.getItem('currentCryptoName');
     //     const send = JSON.parse(stickyValue)
@@ -26,7 +25,7 @@ export const CryptoContextProvider = props => {
     //   })
     const [cryptoStorage, setCryptoStorage] = useState([{}])
 
-    const updateCryptoStorage = () => {
+    const updateCryptoStorage = async () => {
         let cryptoInfo = localStorage.getItem('currentCryptoInfo')
         let parsedCryptoDict = JSON.parse(cryptoInfo)
         let cryptoList= []
@@ -40,14 +39,7 @@ export const CryptoContextProvider = props => {
 
             const response = await URLlink.get('/getCrypto');
             localStorage.setItem('currentCryptoInfo', JSON.stringify(response.data))
-            updateCryptoStorage();
-            // let cryptoInfo = localStorage.getItem('currentCryptoInfo')
-            // let parsedCryptoDict = JSON.parse(cryptoInfo)
-            // let cryptoList= []
-            // currentCrypto.forEach(element => (
-            //    cryptoList.push(parsedCryptoDict[element].USD)
-            // ));
-            // setCryptoStorage(list)
+            await updateCryptoStorage();
           }
   
           fetchData();

@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
-import backendURL from '../backendLink/getBackendURL'
-import '../styles/style.css'
+import backendURL from './../../backendLink/getBackendURL'
+import './../../styles/style.css'
 
 const MarketStatus = () => {
     const [marketStatus, setMarketStatus] = useState(false);

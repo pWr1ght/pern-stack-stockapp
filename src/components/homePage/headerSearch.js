@@ -2,10 +2,10 @@ import React, {useContext, useState, useEffect} from 'react';
 import {TextField, Button} from '@material-ui/core/';
 import Container from '@material-ui/core/Container';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
-import {rearangeData} from '../sortDataFunctions/sortChartData';
-import {TableContext} from '../context/tableContext';
-import backendURL from '../backendLink/getBackendURL';
-import '../styles/style.css'
+import {rearrangeData} from './../../sortDataFunctions/sortChartData';
+import {TableContext} from './../../context/tableContext';
+import backendURL from './../../backendLink/getBackendURL';
+import './../../styles/style.css'
 import SparkLineGraph from './tableComponents/sparkLineGraph'
 
 const HeaderSearch = () => {
@@ -13,6 +13,7 @@ const HeaderSearch = () => {
     const [currentTicker, setCurrentTicker] = useState('');
     const [symbolError, setSymbolError] = useState(false);
     const [marketStatus, setMarketStatus] = useState(false);
+    const [disablingAdd, setDisablingAdd] = useState(false)
   
 
     // the function that grabs the rows
@@ -60,10 +61,10 @@ const HeaderSearch = () => {
           }
         })
         if(submit) {
+          setDisablingAdd(true);
           let now = new Date().getTime()
           let current = parseInt(now/1000)
           let month = current - (86400 * 31)
-  
           //vestigal adding of uneeded user_id
           const addingResponse = await backendURL.post('/', {
             user_id: '1',
@@ -77,7 +78,7 @@ const HeaderSearch = () => {
             setSymbolError(true)
           } else {
             setSymbolError(false)
-            const responseData = rearangeData(addingResponse.data)
+            const responseData = rearrangeData(addingResponse.data)
             setRows((prevRows) => 
               [...prevRows,...[createData(`${currentTicker}`,
                 responseData.priceChange,
@@ -95,6 +96,7 @@ const HeaderSearch = () => {
                 )
               ]])
           }
+          setDisablingAdd(false);
         }
         else {
           console.log("Already entered the stock")
@@ -137,7 +139,7 @@ const HeaderSearch = () => {
                         aria-label="contained primary button group"
                         variant="contained"
                     >
-                    <Button color="primary" style={{backgroundColor: "rgb(27,66,76)", padding: "12px"}} type="submit">Add</Button>
+                    <Button color="primary"  disabled={disablingAdd} style={{backgroundColor: "rgb(27,66,76)", padding: "12px"}} type="submit">Add</Button>
                     </ButtonGroup>
                 </div>
               </form>

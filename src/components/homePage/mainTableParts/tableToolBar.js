@@ -8,13 +8,12 @@ import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
-import {TableContext} from '../../context/tableContext';
+import {TableContext} from './../../../context/tableContext';
 
 const useToolbarStyles = makeStyles((theme) => ({
     root: {
         paddingLeft: theme.spacing(2),
-        paddingRight: theme.spacing(1),
-        zIndex: "-2222"
+        paddingRight: theme.spacing(1)
     },
     highlight:
         theme.palette.type === 'light'

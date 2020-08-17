@@ -19,7 +19,7 @@
 //   return pricesArray[0].y[3];
 // }
 
-export const rearangeData = (tickerData) => {
+export const rearrangeData = (tickerData) => {
     let open = tickerData.o
     let high = tickerData.h
     let low = tickerData.l

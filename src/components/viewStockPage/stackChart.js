@@ -1,6 +1,7 @@
 import ReactApexChart from 'react-apexcharts'
 import React, { useState,useEffect } from 'react'
 import GetStocks from '../../backendLink/getBackendURL'
+import { withTheme } from '@material-ui/core'
 
 const StackChart = (props) => {
     const [seriesData, setSeries] = useState([0])
@@ -25,6 +26,7 @@ const StackChart = (props) => {
         series: seriesData,
         options: {
           chart: {
+            foreColor: 'white',
             width: 380,
           },
           dataLabels: {
@@ -35,7 +37,7 @@ const StackChart = (props) => {
             style: {
                 fontSize:  '20px',
                 fontWeight:  'bold',
-                color:  '#263238'
+                color:  'white'
               },
           },
           responsive: [{
@@ -45,12 +47,14 @@ const StackChart = (props) => {
                 width: 200
               },
               legend: {
-                show: false
+                color: "white",
+                show: true
               }
             }
           }],
-          labels: ["Buy", "Hold", "Sell", "StrongBuy", "StrongSell"],
+          labels: ["StrongBuy", "Buy", "Hold", "Sell", "StrongSell"],
           legend: {
+            color: "white",
             position: 'right',
             offsetY: 0,
             height: 230,

@@ -17,12 +17,13 @@ import {CurrentStockContext} from '../../context/currentStockContext';
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    background: '#0C6BA7'
+    background: '#0C6BA7',
+    backgroundImage: "radial-gradient(circle, #211f1f, #292626, #302d2f, #373437, #3d3c40, #414249, #444953, #45505c, #415869, #3a6074, #2d697e, #147287)"
   },
   paper: {
     padding: theme.spacing(2),
     color: theme.palette.text.secondary,
-    background: '#C3EBF6'
+    background: '#022B3C'
   },
   button: {
     margin: "20px",

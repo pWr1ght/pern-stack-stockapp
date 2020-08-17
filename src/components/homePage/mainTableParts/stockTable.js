@@ -1,34 +1,3 @@
-// import React, {useContext, useState, useEffect} from 'react';
-// import { lighten, makeStyles } from '@material-ui/core/styles';
-// import Table from '@material-ui/core/Table';
-// import TableBody from '@material-ui/core/TableBody';
-// import TableCell from '@material-ui/core/TableCell';
-// import TableContainer from '@material-ui/core/TableContainer';
-// import TablePagination from '@material-ui/core/TablePagination';
-// import TableRow from '@material-ui/core/TableRow';
-// import Paper from '@material-ui/core/Paper';
-// import Checkbox from '@material-ui/core/Checkbox';
-// import FormControlLabel from '@material-ui/core/FormControlLabel';
-// import Switch from '@material-ui/core/Switch';
-// import {TableContext} from '../../context/tableContext';
-// import EnhancedTableHead from './tableHead'
-// import EnhancedTableToolbar from './tableToolBar'
-// import Container from '@material-ui/core/Container';
-// import URLlink from '../backendLink/getBackendURL'
-// import {rearangeData} from '../../sortDataFunctions/sortChartData';
-// import ViewInfo from './rowChart';
-// import StockArrow from './stockArrow';
-// import '../styles/tableStyle.css'
-// import '../styles/style.css'
-// import ReactHover from 'react-hover'
-// import HoverSymbol from './hoverSymbol';
-// import LinearProgress from '@material-ui/core/LinearProgress';
-// import Grow from '@material-ui/core/Grow';
-// import SearchHeader from './headerSearch';
-// import { v4 as uuidv4 } from 'uuid';
-// import ViewMoreInfo from './viewMoreInfo';
-// import MarketStatus from './marketStatusBar'
-
 import React, {useContext, useState, useEffect} from 'react';
 import { lighten, makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -41,16 +10,16 @@ import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
-import {TableContext} from '../../context/tableContext';
+import {TableContext} from './../../../context/tableContext';
 import EnhancedTableHead from './tableHead'
 import EnhancedTableToolbar from './tableToolBar'
 import Container from '@material-ui/core/Container';
-import URLlink from '../../backendLink/getBackendURL'
-import {rearangeData} from '../../sortDataFunctions/sortChartData';
+import URLlink from '../../../backendLink/getBackendURL'
+import {rearrangeData} from './../../../sortDataFunctions/sortChartData';
 import ViewInfo from '../tableComponents/rowChart';
-import StockArrow from '../stockArrow';
-import '../../styles/tableStyle.css'
-import '../../styles/style.css'
+import StockArrow from '../../stockArrow';
+import './../../../styles/tableStyle.css'
+import './../../../styles/style.css'
 import ReactHover from 'react-hover'
 import HoverSymbol from '../tableComponents/hoverSymbol';
 import LinearProgress from '@material-ui/core/LinearProgress';
@@ -60,6 +29,7 @@ import { v4 as uuidv4 } from 'uuid';
 import Button from '@material-ui/core/Button'
 import ViewMoreInfo from '../tableComponents/viewMoreInfo';
 import MarketStatus from '../marketStatusBar'
+import zIndex from '@material-ui/core/styles/zIndex';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -83,7 +53,8 @@ const useStyles = makeStyles((theme) => ({
     },
     tableChart: {
       display:"flex",
-      flexDirection:"column"
+      flexDirection:"column",
+
     },
     visuallyHidden: {
       border: 0,
@@ -153,7 +124,7 @@ const EnhancedTable = () => {
 
           //modify data for stock charts
           const totalModifiedStockData = totalStockInfoResponse.data[0]
-              .map(element => rearangeData(element))
+              .map(element => rearrangeData(element))
           let formattedRows = totalModifiedStockData.map(row => {
             return createData(row.symbol, row.priceChange, row.marketCap, row.currentPrice, {stockId: row.stockId, options: row.options, series: row.series}, row.yahooSummaryData, row.imageInfo, row.stockId, abbreviateNumber(row.marketCap))
           })
@@ -263,11 +234,11 @@ const EnhancedTable = () => {
   const optionsCursorTrueWithMargin = {
     followCursor: true,
     shiftX: 10,
-    shiftY: 0
+    shiftY: -100,
   }
 
   return (  
-    <div className={classes.root}>
+    <div className={classes.root} style={{zIndex: -99999}}>
       <MarketStatus/>
       <Container maxWidth={chartWidth ? false : 'lg'}>
         <Paper className={classes.paper}>
@@ -330,10 +301,12 @@ const EnhancedTable = () => {
                                   <ReactHover
                                       options={optionsCursorTrueWithMargin}>
                                       <ReactHover.Trigger type='trigger'>
-                                        <div><h3>{row.symbol}</h3></div>
+                                        <div><h3>{row.symbol.toUpperCase()}</h3></div>
                                       </ReactHover.Trigger>
+                                      
                                       <ReactHover.Hover type='hover'>
-                                        <HoverSymbol style={{zIndex: 1000}} image={row.imageInfo}/>
+                                      
+                                        <HoverSymbol image={row.imageInfo}/>
                                       </ReactHover.Hover>
                                   </ReactHover>
                                 </div>

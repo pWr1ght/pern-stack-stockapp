@@ -19,9 +19,6 @@ export const TableContextProvider = props => {
    useEffect(() => {
        localStorage.setItem('StockRows', JSON.stringify(rows))
    }, [rows])
-//    useEffect(() => {
-//         localStorage.setItem('StockRows', '[]')
-//    }, [])
 
    return (
        <TableContext.Provider value={{rows, setRows, chartSwitch, setChartSwitch}}>

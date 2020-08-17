@@ -19,11 +19,11 @@ const HoverSymbol = (props) => {
 
   return (
     <Card className={classes.root}>
-      <CardActionArea>
+      <CardActionArea style={{zIndex: "1000"}}>
         <CardMedia
           component="img"
           alt="Contemplative Reptile"
-          height="140"
+          height="90"
           image={props.image.logo}
           title="Contemplative Reptile"
         />

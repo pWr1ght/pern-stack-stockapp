@@ -4,8 +4,8 @@ import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 import Button from '@material-ui/core/Button';
-import CryptoModuleOptions from '../crytobar/cryptoSwitch'
-import {CryptoContext} from '../../context/cryptoContext';
+import CryptoModuleOptions from './cryptoModalOptions'
+import {CryptoContext} from '../../../context/cryptoContext';
 import Paper from '@material-ui/core/Paper';
 import Card from '@material-ui/core/Card';
 

@@ -5,20 +5,20 @@
 .MuiToolbar-gutters.makeStyles-root-5.MuiToolbar-regular.MuiToolbar-root {
     background-color: #022B3C;
     color: white;
-    z-index: "-2222"
 }
 .MuiToolbar-root{
     background-color:#022B3C;
     color: white;
 }
 
-.MuiToolbar-root {
-    
-}
 .MuiToolbar-gutters.MuiTablePagination-toolbar.MuiToolbar-regular.MuiToolbar-root {
    
     /* z-index: -2222 */
     
+}
+
+.mui-5957 {
+    z-index: 1000;
 }
 
 

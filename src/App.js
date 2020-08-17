@@ -5,8 +5,8 @@ import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import {TableContextProvider} from './context/tableContext';
 import {CurrentStockContextProvider} from './context/currentStockContext';
 import {CryptoContextProvider} from './context/cryptoContext';
-import HomePage from './components/homePage';
-import InteractiveBigChart from './components/interactiveChart';
+import HomePage from './components/homePage/homePage';
+import InteractiveBigChart from './components/interactivePage/interactiveChart';
 
 function App() {
   return (

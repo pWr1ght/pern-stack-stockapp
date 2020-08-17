@@ -46,7 +46,7 @@ const StockCard = (props) => {
         <Card className={classes.root}>
             <CardContent>
                     <Typography style={{textAlign: "center"}} variant="h3">
-                      {props.name}
+                      {props.name.toUpperCase()}
                     </Typography>
                     <Typography style={{lineHeight: "1"}} variant="h3">
                         {props.cardData.regularMarketPrice.toFixed(2)} <span style={{color: "rgba(0, 0, 0, 0.54)", fontSize: "16px"}}>({props.cardData.financialCurrency})</span>

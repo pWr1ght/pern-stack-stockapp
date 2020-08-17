@@ -3,7 +3,7 @@ import StockTable from './mainTableParts/stockTable'
 import CryptoCompare from "react-crypto-compare";
 import CryptoTicker from './crytobar/crytpoTicker'
 import SearchHeader from './headerSearch';
-import '../styles/style.css'
+import './../../styles/style.css'
 
 // const ws = require('ws');
 // var cryptocompareWS = new ws('wss://streaming.cryptocompare.com')

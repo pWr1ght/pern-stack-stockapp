@@ -1,15 +1,15 @@
 import React, {useState, useEffect, useContext} from 'react'
 import Ticker from 'react-ticker'
 // import URLlink from '../backendLink/getBackendURL'
-import URLlink from '../../backendLink/getBackendURL'
+import URLlink from '../../../backendLink/getBackendURL'
 import CryptoCompare from 'react-crypto-compare';
-import {CryptoContext} from '../../context/cryptoContext';
-import CryptoOptions from './cryptoButtons';
+import {CryptoContext} from './../../../context/cryptoContext';
+import CryptoOptions from './cryptoModal';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid'
-import '../../styles/cryptoStyle.css'
+import './../../../styles/cryptoStyle.css'
 import { wrap } from 'highcharts';
-import StockArrow from '../stockArrow';
+import StockArrow from '../../stockArrow';
 
 // const GetRatesFromAPI = (props) => {
    
@@ -28,7 +28,7 @@ import StockArrow from '../stockArrow';
     const {currentCrypto, setCryto, cryptoStorage, setCryptoStorage } = useContext(CryptoContext)
     const [cryptoInfo, setCryptoInfo] = useState([{}])
 
-    useEffect(() => {
+    // useEffect(() => {
         // async function fetchData() {
         //   const response = await URLlink.get('/getCrypto');
         //   localStorage.setItem('currentCryptoInfo', JSON.stringify(response.data))
@@ -45,15 +45,8 @@ import StockArrow from '../stockArrow';
         // }
 
         // fetchData();
-      }, []);
-      const fixingToFloat = (CHANGEPCTDAY) => {
-        const value = (Math.round(CHANGEPCTDAY * 100) / 100).toFixed(2)
-        return value
-        // const value = CHANGEPCTDAY.toString()
-        // const hell = value.toFixed(2)
+      // }, []);
 
-        // return hell
-      }
     return (
       <div>
         <div className="flexBoxContainer" style={{flexWrap: "no-wrap", background: "rgb(34,34,34)"}}>            
