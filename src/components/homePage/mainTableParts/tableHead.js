@@ -19,7 +19,7 @@ function EnhancedTableHead(props) {
     const headCells = [
       { id: 'symbol', direction: 'left', disablePadding: false, label: 'Stock Ticker',  sort: true},
       { id: 'stockChange', direction: 'right', disablePadding: false, label: 'Day Change', sort: true },
-      { id: 'marketCap', direction: 'right', disablePadding: false, label: 'marketCap (USD) ', sort: true},
+      { id: 'marketCap', direction: 'right', disablePadding: false, label: 'Market Cap (USD) ', sort: true},
       { id: 'sharePrice', direction: 'right', disablePadding: false, label: 'Share Price (USD)',sort: true},
       { id: 'chart', direction: 'center', disablePadding: true, label: `${chartSwitch}`, sort: false },
       { id: 'link', direction: 'center', disablePadding: true, label: 'Info', sort: false}
