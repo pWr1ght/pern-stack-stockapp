@@ -122,7 +122,9 @@ const options = {
         return position;
       }
     },
-    chart: {height: 800},
+    chart: { 
+      height: '900' 
+    },
     series: [{
       type: 'ohlc',
       id: 'aapl-ohlc',
@@ -138,7 +140,7 @@ const options = {
     responsive: {
       rules: [{
         condition: {
-          maxWidth: 800
+          maxWidth: 2000
         },
         chartOptions: {
           rangeSelector: {
@@ -163,7 +165,7 @@ const options = {
                 </Button>
               </Box>
               <Box p={.5}  display="flex" justifyContent="center"  bgcolor="grey.300">
-                <p style={{marginBottom: "0"}}>Note: For best interactivity, please full screen the Chart</p>
+                <p style={{marginBottom: "0"}}>Note: For best interactivity, please full screen the chart</p>
               </Box>
         </Box>
           <HighchartsReact options={options} constructorType={'stockChart'} highcharts={Highchartsd} />

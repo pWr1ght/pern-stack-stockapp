@@ -14,6 +14,7 @@ const HomePage = () => {
             <CryptoTicker/>
             <SearchHeader/>
             <StockTable/>
+            <div className="footerStyle"></div>
         </div>
     )
 }

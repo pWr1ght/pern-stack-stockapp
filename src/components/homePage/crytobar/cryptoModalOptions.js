@@ -22,6 +22,7 @@ import Select from '@material-ui/core/Select';
 import Checkbox from '@material-ui/core/Checkbox';
 import Chip from '@material-ui/core/Chip';
 import { v4 as uuidv4 } from 'uuid';
+import { Typography } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -149,8 +150,8 @@ const ModalOptions = () => {
 
     return (
         <div>
-            <div style={{display: "flex"}}>
-                {currentCrypto.map((cryp) => <div key={uuidv4()}> <Button key={uuidv4()} value={cryp} onClick={() =>deleteItem(cryp)} style={{borderRadius: "40px", marginLeft: "10px"}} variant="contained" color={deleting ? ('secondary') : ('primary')}> {`${cryp} ` + display()} </Button> </div>)}
+            <div style={{display: "flex", flexWrap: "wrap"}}>
+                {currentCrypto.map((cryp) => <div key={uuidv4()}> <Button key={uuidv4()} value={cryp} onClick={() =>deleteItem(cryp)} style={{borderRadius: "40px", marginLeft: "10px"}} variant="contained" color={deleting ? ('secondary') : ('primary')}><Typography variant="button">{`${cryp} ` + display()}</Typography></Button> </div>)}
             </div>
             <Divider style={{marginTop: '20px'}}/>
             <div style={{margin: '20px', display: "flex"}}>

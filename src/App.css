@@ -40,3 +40,8 @@
 * {
   font-family: 'Trebuchet MS'
 }
+
+.body
+{
+  background-image: "radial-gradient(circle, #211f1f, #292626, #302d2f, #373437, #3d3c40, #414249, #444953, #45505c, #415869, #3a6074, #2d697e, #147287)",
+}

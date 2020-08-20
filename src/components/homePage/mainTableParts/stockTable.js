@@ -34,11 +34,16 @@ import zIndex from '@material-ui/core/styles/zIndex';
 const useStyles = makeStyles((theme) => ({
     root: {
       width: '100%',
-      backgroundAttachment: "fixed",
+      height: '100%',
+      minHeight: "800px",
+      // backgroundAttachment: "fixed",
       backgroundPosition: "center",
       backgroundImage: "radial-gradient(circle, #211f1f, #292626, #302d2f, #373437, #3d3c40, #414249, #444953, #45505c, #415869, #3a6074, #2d697e, #147287)",
-      paddingBottom: "100px",
-      zIndex: -99999
+      paddingBottom: "150px",
+      zIndex: -99999,
+      // position: "absolute",
+    // top: "50px",
+    bottom: 0
     },
     paper: {
       width: '100%',
@@ -238,7 +243,7 @@ const EnhancedTable = () => {
   }
 
   return (  
-    <div className={classes.root} style={{zIndex: -99999}}>
+    <div className={classes.root}>
       <MarketStatus/>
       <Container maxWidth={chartWidth ? false : 'lg'}>
         <Paper className={classes.paper}>
