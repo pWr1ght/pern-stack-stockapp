@@ -23,5 +23,5 @@ Built with CRUD methodolgies
 
 Created with React
  
-clone, npm install and go to the backend and npm node.js (make sure to uncomment things related to heroku as it is hosted on heroku)
+clone, npm install and go to the backend and npm index.js (make sure to uncomment things related to heroku as it is hosted on heroku)
 
