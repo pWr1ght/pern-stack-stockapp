@@ -6,9 +6,13 @@ This is a stock portfolio web app that enables the users to pick their stocks an
 It uses several financial APIs like Yahoo and cryptocompare. As well as clearbit image for stock logos.
 
 Built using:
+
 Browser Local Stoarage- Originally built with a postgreSQL database. Later transitioned to a local browser database for practicality reasons.
+
 Express- Backend
+
 React- Frontend
+
 NodeJS
 
 Built with CRUD methodolgies
