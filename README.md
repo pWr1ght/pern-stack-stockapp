@@ -25,6 +25,4 @@ Created with React
  
 clone, npm install and go to the backend and npm index.js (make sure to uncomment things related to heroku as it is hosted on heroku)
 
-Go to showwcase to see for a better presentation: https://app.showwcase.com/project/6023/STOCK-APP-PORTFOLIO-NOW-FULL-STACK-REACT-WEB-APP
-
 Link to quick video demo: https://www.youtube.com/watch?v=TDzL7dUNjKc
