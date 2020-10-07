@@ -12,9 +12,7 @@
 }
 
 .MuiToolbar-gutters.MuiTablePagination-toolbar.MuiToolbar-regular.MuiToolbar-root {
-   
-    /* z-index: -2222 */
-    
+    /* z-index: -2222 */   
 }
 
 .mui-5957 {
@@ -41,7 +39,8 @@ background-color: #022B3C;
 color: white;
 }
 
-                        
+/* height: calc(100% - 100px);  
+                         */
 /* .searchHeader.h1 {
     color: white;
 } */
