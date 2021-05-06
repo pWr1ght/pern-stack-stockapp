@@ -14,7 +14,7 @@
     "chart.js": "^2.9.3",
     "fincal": "^1.0.6",
     "finnhub": "^1.1.6",
-    "highcharts": "^8.1.2",
+    "highcharts": "^9.0.0",
     "highcharts-react-official": "^3.0.0",
     "html-react-parser": "^0.13.0",
     "react": "^16.13.1",
